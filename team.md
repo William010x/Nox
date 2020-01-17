@@ -1,10 +1,8 @@
-Team Noxcissist
+# Team Noxcissist
 
 Team Members:
-Khansho4 - Shoaib Khan 
-
-syedsaa3 - Saad Afaan Syed
-
-sanwilli - William San
-
-huynhd10 - David Huynh
+- Shoaib Khan `khansho4`
+- Saad Afaan Syed `syedsaa3`
+- William San `sanwilli`
+- David Huynh `huynhd10`
+- David Chen `chenda33`
