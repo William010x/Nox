@@ -1,6 +1,7 @@
 # Team Noxcissist
 
 Team Members:
+- Ali Chaudhry chaud439
 - Shoaib Khan `khansho4`
 - Saad Afaan Syed `syedsaa3`
 - William San `sanwilli`
