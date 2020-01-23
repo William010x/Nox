@@ -7,3 +7,4 @@ Team Members:
 - William San `sanwilli`
 - David Huynh `huynhd10`
 - David Chen `chenda33`
+- Wei Te (Walter) Lin `linwei17`
