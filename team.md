@@ -1,7 +1,7 @@
 # Team Noxcissist
 
 Team Members:
-- Ali Chaudhry `chaud4391`
+- Ali Chaudhry `chaud439`
     Methods: email, phone, messenger, text
     Phone #: 289-788-7376
     Email: achaudhral.chaudhry@gmail.com
