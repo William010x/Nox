@@ -47,7 +47,7 @@ const professorSchema = new Schema({
         default: uuidv4(),
         required: true
     },
-    date: {
+    timeStamp: {
         type: String,
         default: getDateTime()
     }

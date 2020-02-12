@@ -16,7 +16,7 @@ if (!socket) {
 // @access  Public
 router.get('/', (req, res) => {
     Record.find()
-        .sort({ date: -1 })
+        .sort({ timeStamp: -1 })
         .then(records => res.json(records))
 });
 
