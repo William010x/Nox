@@ -4,12 +4,21 @@ import Cookies from 'universal-cookie';
 import { PublicURL } from '../config/constants';
 const cookies = new Cookies();
 const courses = [];
+const uuidv4 = require('uuid/v4');
 
 
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+}
+
+function genHexCode(length) {
+    var uuid = uuidv4();
+    var hex = uuid.replace(/-/g, "");
+    var int = parseInt(hex, 16) % (16**(length)-1);
+    var sesid = int.toString(16);
+    return sesid;
 }
 
 export const getCourses = (pid) => dispatch => {
@@ -44,7 +53,8 @@ export const downloadSession = (sesid) => dispatch => {
 }
 
 export const addCourse = (Course) => dispatch => {
-    var sesid = getRandomIntInclusive(100000, 999999);
+    //var sesid = getRandomIntInclusive(100000, 999999);
+    var sesid = genHexCode(6);
 
     Course.sesid = String(sesid);
     axios.post('sessions', Course, { baseURL: PublicURL + ':5001/nox/api/' })
@@ -60,7 +70,8 @@ export const addCourse = (Course) => dispatch => {
 }
 
 export const addSession = (Session) => dispatch => {
-    var sesid = getRandomIntInclusive(100000, 999999);
+    //var sesid = getRandomIntInclusive(100000, 999999);
+    var sesid = genHexCode(6);
     Session.sesid = sesid;
     axios
         .post('sessions', Session, { baseURL: PublicURL + ':5001/nox/api/' })
