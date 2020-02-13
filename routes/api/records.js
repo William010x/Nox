@@ -27,15 +27,34 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     // TO DO: New comment 
     if (req.body.isComment != undefined && req.body.isComment != null && req.body.isComment == "true") {
-        var recentComments = Record.find({
-            studentID: req.body.studentID, 
-            sessionID: req.body.sessionID}, {timeStamp: 1})
-            .limit(1)
-            .then(item => console.log(item.timeStamp))
-            //timeStamp: {$gt: getDelayTime()}})
+        Record.find({ studentID: req.body.studentID, sessionID: req.body.sessionID }, function (err, result) {
+            var delayTime = new Date()
+            delaytime = delayTime.setTime(delayTime.getTime() - 500);
+            console.log(delayTime);
+            if (err) { // Internal Error
+                //callback(err);
+                res.status(err.status).send({ success: false });
+                return;
+            }
+            else if (result != undefined && result[result.length-1] != undefined && result[result.length-1].timeStamp > delayTime) {
+                console.log(result[result.length-1].timeStamp);
+                console.log(result);
+                console.log("Message pass");
+            }
+            else {
+                console.log(result);
+                console.log("Message cooldown");
+            }
+        })
+        // var recentComments = Record.find({
+        //     studentID: req.body.studentID, 
+        //     sessionID: req.body.sessionID}, {timeStamp: 1})
+        //     .limit(1)
+        //     .then(item => console.log(item.timeStamp))
+        //     //timeStamp: {$gt: getDelayTime()}})
 
-        
-        if (recentComments.length() != 0) {
+        /*
+        if (result.length > 0) {
             const newRecord = new Record({
                 studentID: req.body.studentID,
                 sessionID: req.body.sessionID,
@@ -58,7 +77,7 @@ router.post('/', (req, res) => {
         }
         else {
             console.log("Message cooldown");
-        }
+        }*/
     }
     // New rating
     else {

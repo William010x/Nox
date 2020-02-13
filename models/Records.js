@@ -37,8 +37,8 @@ const recordsSchema = new Schema({
         required: true
     },
     dateJoined: {
-        type: String,
-        default: getDateTime()
+        type: Date.now,
+        default: Date.now
     },
     value: {
         type: Number,
@@ -53,8 +53,8 @@ const recordsSchema = new Schema({
         maximum: 2,
     },
     timeStamp: {// Dateformat
-        type: String,
-        default: getDateTime()
+        type: Date,
+        default: Date.now
     },
     comment: {
         type: String,
