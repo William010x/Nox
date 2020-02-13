@@ -29,6 +29,8 @@ export class Dashboard extends Component {
 
     this.state = {
       // Initially, we have 0 students in each category.
+
+      totalStudentsConnected: 0,
       okayStudents: 0,
       goodStudents: 0,
       confusedStudents: 0,
@@ -82,7 +84,8 @@ export class Dashboard extends Component {
               ]
             },
             average_rating: JsonParameters.average_rating,
-            avgColorRGB: JsonParameters.avgRGB
+            avgColorRGB: JsonParameters.avgRGB,
+            totalStudentsConnected: JsonParameters.totalStudents
           });
         });
       });
@@ -105,6 +108,8 @@ export class Dashboard extends Component {
     return (
       <div>
         <div className="header" style={{ position: "relative", left: "1%" }}>
+
+          <p>Total Students in Session: {this.state.totalStudentsConnected}</p>
           <h2>
             Session Code: {sessionID}
             <input
