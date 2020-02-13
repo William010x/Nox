@@ -1,32 +1,36 @@
-import React, { Component } from 'react';
-import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { connect } from 'react-redux';
-import { getCourses, addCourse, downloadSession } from '../actions/sessionActions';
-import PropTypes from 'prop-types';
-import Cookies from 'universal-cookie';
+import React, { Component } from "react";
+import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { connect } from "react-redux";
+import {
+  getCourses,
+  addCourse,
+  downloadSession
+} from "../actions/sessionActions";
+import PropTypes from "prop-types";
+import Cookies from "universal-cookie";
 
-import ListSubheader from '@material-ui/core/ListSubheader';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Collapse from '@material-ui/core/Collapse';
-import AddIcon from '@material-ui/icons/AddBox';
-import DownloadIcon from '@material-ui/icons/SaveAlt';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import IconButton from '@material-ui/core/IconButton';
+import ListSubheader from "@material-ui/core/ListSubheader";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import Collapse from "@material-ui/core/Collapse";
+import AddIcon from "@material-ui/icons/AddBox";
+import DownloadIcon from "@material-ui/icons/SaveAlt";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import IconButton from "@material-ui/core/IconButton";
 
 const cookies = new Cookies();
-const sessionID = cookies.get('sesid');
-const PID = cookies.get('pid') || 'Furki';
+const sessionID = cookies.get("sesid");
+const PID = cookies.get("pid") || "Furki";
 
 class SessionsList extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      pid: cookies.get('pid') || 'Furki'
+      pid: cookies.get("pid") || "Furki"
     };
 
     this.changeBtnValue = this.changeBtnValue.bind(this);
@@ -62,14 +66,25 @@ class SessionsList extends Component {
     return (
       <Container>
         <ListGroup>
-          <TransitionGroup className='sessions-list'>
+          <TransitionGroup className="sessions-list">
             {sessions.map(course => (
-              <CSSTransition timeout={500} classNames='fade'>
+              <CSSTransition timeout={500} classNames="fade">
                 <ListItem button onClick={this.changeBtnValue.bind(this)}>
-                  <IconButton aria-label="add" key={course} onClick={this.changeBtnValue}>
+                  <IconButton
+                    aria-label="add"
+                    key={course}
+                    onClick={this.changeBtnValue}
+                  >
                     <AddIcon />
                   </IconButton>
                   <ListItemText primary={course} />
+                  <Button
+                    color="dark"
+                    style={{ marginBottom: "2rem" }}
+                    onClick={this.toggle}
+                  >
+                    Download Session Data
+                  </Button>
                 </ListItem>
                 {/*
                 {course === "CSC343H5" ?
@@ -99,20 +114,14 @@ class SessionsList extends Component {
 }
 
 const mapStateToProps = state => ({
-  session: state.session,
+  session: state.session
 });
 
-export default connect(
-  mapStateToProps,
-  { getCourses, addCourse, downloadSession }
-)(SessionsList);
-
-
-
-
-
-
-
+export default connect(mapStateToProps, {
+  getCourses,
+  addCourse,
+  downloadSession
+})(SessionsList);
 
 /*
 import React, { useState } from 'react';
