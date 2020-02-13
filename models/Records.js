@@ -36,10 +36,6 @@ const recordsSchema = new Schema({
         type: String,
         required: true
     },
-    dateJoined: {
-        type: String,
-        default: getDateTime()
-    },
     value: {
         type: Number,
         default: 0, // Would this work? -- Yes, MongoDB can ignore null values in your calculations 
