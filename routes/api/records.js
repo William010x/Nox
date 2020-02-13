@@ -29,8 +29,8 @@ router.post('/', (req, res) => {
     if (req.body.isComment != undefined && req.body.isComment != null && req.body.isComment == "true") {
         Record.find({ studentID: req.body.studentID, sessionID: req.body.sessionID }, function (err, result) {
             var delayTime = new Date()
-            delaytime = delayTime.setTime(delayTime.getTime() - 500);
-            console.log(delayTime);
+            delaytime = delayTime.setTime(delayTime.getTime() - 5000);
+            //console.log(delayTime);
             if (err) { // Internal Error
                 //callback(err);
                 res.status(err.status).send({ success: false });
@@ -39,11 +39,31 @@ router.post('/', (req, res) => {
             else if (result != undefined && result[result.length-1] != undefined && result[result.length-1].timeStamp > delayTime) {
                 console.log(result[result.length-1].timeStamp);
                 console.log(result);
-                console.log("Message pass");
+                console.log("Message cooldown on " + req.body.comment);
             }
             else {
                 console.log(result);
-                console.log("Message cooldown");
+                console.log("Message pass");
+
+                const newRecord = new Record({
+                    studentID: req.body.studentID,
+                    sessionID: req.body.sessionID,
+                    value: 0,
+                    old_value: 0,
+                    comment: req.body.comment
+    
+                });
+                const myParameters = { "comment": req.body.comment, "sid": req.body.studentID, sesid: req.body.sessionID, "Time": newRecord.timeStamp, "socketID": "" };
+    
+                // Websocket Client 
+                // which sends the data to the websocket server --> in server. 
+                socket.emit('newCommentToServer', myParameters);
+                //console.log(5);
+                console.log(myParameters);
+                newRecord.save();
+                res.json(myParameters);
+    
+                //newRecord.save().then(record => console.log(record) ).catch(error => console.log(error));
             }
         })
         // var recentComments = Record.find({
@@ -52,32 +72,6 @@ router.post('/', (req, res) => {
         //     .limit(1)
         //     .then(item => console.log(item.timeStamp))
         //     //timeStamp: {$gt: getDelayTime()}})
-
-        /*
-        if (result.length > 0) {
-            const newRecord = new Record({
-                studentID: req.body.studentID,
-                sessionID: req.body.sessionID,
-                value: 0,
-                old_value: 0,
-                comment: req.body.comment
-
-            });
-            const myParameters = { "comment": req.body.comment, "sid": req.body.studentID, sesid: req.body.sessionID, "Time": newRecord.timeStamp, "socketID": "" };
-
-            // Websocket Cleint 
-            // which sends the data to the websocket server --> in server. 
-            socket.emit('newCommentToServer', myParameters);
-            //console.log(5);
-            console.log(myParameters);
-            newRecord.save();
-            res.json(myParameters);
-
-            //newRecord.save().then(record => console.log(record) ).catch(error => console.log(error));
-        }
-        else {
-            console.log("Message cooldown");
-        }*/
     }
     // New rating
     else {
