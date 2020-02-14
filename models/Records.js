@@ -49,8 +49,8 @@ const recordsSchema = new Schema({
         maximum: 2,
     },
     timeStamp: {// Dateformat
-        type: String,
-        default: getDateTime()
+        type: Date,
+        default: Date.now
     },
     comment: {
         type: String,
