@@ -3,7 +3,7 @@ const router = express.Router();
 const io = require('socket.io-client');
 const constantModule = require('../../config/constants');
 const delay = 5000; // 5000 ms = 30 sec
-
+const msgMaxLen = 200;// change msg_max_len for allowing longer msgs
 //Records Model
 const Record = require('../../models/Records');
 
@@ -26,7 +26,8 @@ router.get('/', (req, res) => {
 // @access  Public
 router.post('/', (req, res) => {
     // TO DO: New comment 
-    if (req.body.isComment != undefined && req.body.isComment != null && req.body.isComment == "true") {
+    if (req.body.isComment != undefined && req.body.isComment != null && req.body.isComment == "true" &&
+     req.body.comment.length < msgMaxLen && req.body.comment.length > 0) {
         Record.find({ studentID: req.body.studentID, sessionID: req.body.sessionID }, function (err, result) {
             var delayTime = new Date()
             delaytime = delayTime.setTime(delayTime.getTime() - delay);
