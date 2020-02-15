@@ -14,7 +14,14 @@ const cookieConfig = {
     // signed: true // if you use the secret with cookieParser
 };
 
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+}
+
 router.post('/FindSession', (req, res) => {
+    console.log(req.body);
     Session.findOne({ sesid: req.body.sesid }, function (err, result) {
         //res.send(result);
         if (err) { // Internal Error
@@ -162,14 +169,33 @@ router.post('/JoinSession', (req, res) => {
 // @route   POST api/sessions
 // @desc    Create a session
 // @access  Private localhost:3000 (front-end)
-router.post('/', (req, res) => {
-    console.log(`Received POST request for course: ${req.body.courseCode}`)
+router.post('/', async (req, res) => {
+    var id = getRandomIntInclusive(100000, 999999);
+    var unique = false;
+    var n = 0;
+    var MAX_TRIES = 10;
+    
+    while (!unique && n < MAX_TRIES) {
+        console.log("sesid=", id);
+        await Session.findOne({ sesid: id }, function (err, result) {
+            if (err) { // Internal error
+                res.status(err.status).send({ success: false });
+                return;
+            } else if (result && result.sesid === id) { // Session exists
+                id = getRandomIntInclusive(100000, 999999);
+            } else {
+                unique = true;
+            }
+        })
+        n++;
+    }
+
+    console.log("New session created! sesid=", id);
     const newSession = new Session({
         courseCode: req.body.courseCode,
         pid: req.body.pid,
-        sesid: req.body.sesid
+        sesid: id
     });
-
 
     newSession.save().then(sessions => res.json(sessions))
 });

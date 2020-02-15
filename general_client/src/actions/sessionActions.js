@@ -54,9 +54,9 @@ export const downloadSession = (sesid) => dispatch => {
 
 export const addCourse = (Course) => dispatch => {
     //var sesid = getRandomIntInclusive(100000, 999999);
-    var sesid = genHexCode(6);
+    //var sesid = genHexCode(6);
 
-    Course.sesid = String(sesid);
+    //Course.sesid = sesid;
     axios.post('sessions', Course, { baseURL: PublicURL + ':5001/nox/api/' })
         .then(res => {
             console.log(`Received response from server: ${{ res }}`)
@@ -71,10 +71,10 @@ export const addCourse = (Course) => dispatch => {
 
 export const addSession = (Session) => dispatch => {
     //var sesid = getRandomIntInclusive(100000, 999999);
-    var sesid = genHexCode(6);
-    Session.sesid = sesid;
-    axios
-        .post('sessions', Session, { baseURL: PublicURL + ':5001/nox/api/' })
+    //var sesid = genHexCode(6);
+
+    //Session.sesid = sesid;
+    axios.post('sessions', Session, { baseURL: PublicURL + ':5001/nox/api/' })
         .then(res => {
             console.log(`Received response from server: ${{ res }}`)
             dispatch({
