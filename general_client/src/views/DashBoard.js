@@ -85,6 +85,43 @@ export class Dashboard extends Component {
                 }
               ]
             },
+            lineChartData: {
+              title: "Student's Understanding Progression",
+              labels: ["10", "20", "30", "40", "50", "60"],
+              datasets: [
+                {
+                  label: "Too fast",
+                  fill: false,
+                  data: [20, 30, 25, 40, 50, 30],
+                  tension: 0,
+                  borderColor: "rgb(255, 99, 132)",
+                  borderWidth: 3,
+                  hoverBorderWidth: 10,
+                  hoverBorderColor: "#000"
+                },
+                {
+                  label: "Too slow",
+                  fill: false,
+                  data: [10, 20, 11, 7, 10, 12],
+                  tension: 0,
+                  borderColor: "rgb(150, 0, 0)",
+                  borderWidth: 3,
+                  hoverBorderWidth: 10,
+                  hoverBorderColor: "#000"
+                },
+                {
+                  label: "Okay",
+                  fill: false,
+                  data: [40, 30, 35, 19, 10, 19],
+                  tension: 0,
+                  borderColor: "rgb(0, 0, 255)",
+                  //backgroundColor:['rgba(0, 255, 0, 0.7)']
+                  borderWidth: 3,
+                  hoverBorderWidth: 10,
+                  hoverBorderColor: "#000"
+                }
+              ]
+            },
             average_rating: JsonParameters.average_rating,
             avgColorRGB: JsonParameters.avgRGB,
             totalStudentsConnected: JsonParameters.totalStudents
@@ -161,7 +198,7 @@ export class Dashboard extends Component {
           </div>
         </div>
         <div>
-          <LineChart chartData={this.state.chartData}></LineChart>
+          <LineChart chartData={this.state.lineChartData}></LineChart>
         </div>
       </div>
 
