@@ -138,6 +138,7 @@ export class Dashboard extends Component {
 
         <div>
           { this.state.display && <Histogram chartData={this.state.chartData}></Histogram>}
+          { !this.state.display && <Button style={{ width: 300 }} variant="dark">Another Graph</Button>}
           <div className="chat_window">
             <div className="top_menu">
               <div className="buttons">
