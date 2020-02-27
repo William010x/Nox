@@ -26,9 +26,10 @@ console.log("THIS IS PROFESSOR CLIENT SOCKET INFO: ", socket);
 export class Dashboard extends Component {
   constructor(props) {
     super(props);
+    
     this.messages = React.createRef();
     //  this.scrollToBottom = this.scrollToBottom.bind(this);
-
+    this.toggle = this.toggle.bind(this);
     this.state = {
       // Initially, we have 0 students in each category.
 
@@ -38,7 +39,8 @@ export class Dashboard extends Component {
       confusedStudents: 0,
       average_rating: null,
       allMessages: [],
-      avgColorRGB: "grey"
+      avgColorRGB: "grey",
+      display: true
     };
 
     var that = this;
@@ -143,6 +145,12 @@ export class Dashboard extends Component {
     this.scrollToBottom();
   }
 
+  toggle() {
+    this.setState({
+        display: !this.state.display,
+    });
+  }
+
   render() {
     const { data, labels } = this.state;
     return (
@@ -171,8 +179,8 @@ export class Dashboard extends Component {
         </div>
 
         <div>
-          <Histogram chartData={this.state.chartData}></Histogram>
-
+          { this.state.display && <Histogram chartData={this.state.chartData}></Histogram>}
+          { !this.state.display && <LineChart chartData={this.state.lineChartData}></LineChart>}
           <div className="chat_window">
             <div className="top_menu">
               <div className="buttons">
@@ -196,9 +204,7 @@ export class Dashboard extends Component {
 
             <div className="bottom_wrapper clearfix"></div>
           </div>
-        </div>
-        <div>
-          <LineChart chartData={this.state.lineChartData}></LineChart>
+          <Button style={{ width: 300 }} variant="dark" onClick={this.toggle}>Toggle</Button>
         </div>
       </div>
 
