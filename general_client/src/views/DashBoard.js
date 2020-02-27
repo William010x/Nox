@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-//import LineChart from '../components/LineChart';
+//import classes from "./Dashboard.module.css";
+import LineGraph from "../components/LineGraph";
 import Histogram from "../components/Histogram";
 import io from "socket.io-client";
 import Cookies from "universal-cookie";
@@ -7,6 +8,7 @@ import "../CSS/Chat.css";
 import "../CSS/Histogram.css";
 import { Button, FormControl, Container, Row } from "react-bootstrap";
 import { PublicURL } from "../config/constants";
+import LineChart from "../components/LineChart";
 
 // Get current session id from cookie
 const cookies = new Cookies();
@@ -105,10 +107,10 @@ export class Dashboard extends Component {
   }
 
   render() {
+    const { data, labels } = this.state;
     return (
       <div>
         <div className="header" style={{ position: "relative", left: "1%" }}>
-
           <p>Total Students in Session: {this.state.totalStudentsConnected}</p>
           <h2>
             Session Code: {sessionID}
@@ -157,6 +159,9 @@ export class Dashboard extends Component {
 
             <div className="bottom_wrapper clearfix"></div>
           </div>
+        </div>
+        <div>
+          <LineChart chartData={this.state.chartData}></LineChart>
         </div>
       </div>
 

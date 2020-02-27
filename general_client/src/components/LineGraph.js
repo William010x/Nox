@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Bar, Line, Pie } from "react-chartjs-2";
 
-export class LineChart extends Component {
+export class LineGraph extends Component {
   //Initial state
   constructor(props) {
     super(props);
@@ -67,4 +67,4 @@ export class LineChart extends Component {
   }
 }
 
-export default LineChart;
+export default LineGraph;
