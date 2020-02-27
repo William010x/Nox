@@ -26,7 +26,7 @@ export class Dashboard extends Component {
     super(props);
     this.messages = React.createRef();
     //  this.scrollToBottom = this.scrollToBottom.bind(this);
-
+    this.toggle = this.toggle.bind(this);
     this.state = {
       // Initially, we have 0 students in each category.
 
@@ -36,7 +36,8 @@ export class Dashboard extends Component {
       confusedStudents: 0,
       average_rating: null,
       allMessages: [],
-      avgColorRGB: "grey"
+      avgColorRGB: "grey",
+      display: true
     };
 
     var that = this;
@@ -91,7 +92,11 @@ export class Dashboard extends Component {
       });
     }
   }
-
+  toggle() {
+    this.setState({
+        display: !this.state.display,
+    });
+  }
   scrollToBottom = () => {
     this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   };
@@ -109,7 +114,7 @@ export class Dashboard extends Component {
       <div>
         <div className="header" style={{ position: "relative", left: "1%" }}>
 
-          <p>Total Students in Session: {this.state.totalStudentsConnected}</p>
+          <p>Total Students in Session: {this.state.totalStudentsConnected} </p>
           <h2>
             Session Code: {sessionID}
             <input
@@ -132,8 +137,7 @@ export class Dashboard extends Component {
         </div>
 
         <div>
-          <Histogram chartData={this.state.chartData}></Histogram>
-
+          { this.state.display && <Histogram chartData={this.state.chartData}></Histogram>}
           <div className="chat_window">
             <div className="top_menu">
               <div className="buttons">
@@ -158,6 +162,7 @@ export class Dashboard extends Component {
             <div className="bottom_wrapper clearfix"></div>
           </div>
         </div>
+        <Button style={{ width: 300 }} variant="dark" onClick={this.toggle}>Toggle</Button>
       </div>
 
       // <LineChart chartData={this.state.chartData} />
