@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-//import classes from "./Dashboard.module.css";
-import LineGraph from "../components/LineGraph";
 import Histogram from "../components/Histogram";
 import io from "socket.io-client";
 import Cookies from "universal-cookie";
 import "../CSS/Chat.css";
 import "../CSS/Histogram.css";
-import { Button, FormControl, Container, Row } from "react-bootstrap";
+import { Button} from "react-bootstrap";
 import { PublicURL } from "../config/constants";
 import LineChart from "../components/LineChart";
 
@@ -17,9 +15,6 @@ const sessionID = cookies.get("Prof_sesid");
 // Establish socket connection for the Professor
 // This will allow the Professor to recieve Data from the server
 let socket;
-
-// TO DO: Assign sesID when you create one
-let sesID = "iwq_ZWuh";
 
 console.log("THIS IS PROFESSOR CLIENT SOCKET INFO: ", socket);
 
@@ -152,7 +147,6 @@ export class Dashboard extends Component {
   }
 
   render() {
-    const { data, labels } = this.state;
     return (
       <div>
         <div className="header" style={{ position: "relative", left: "1%" }}>
