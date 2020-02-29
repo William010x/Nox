@@ -12,13 +12,13 @@ export const getRecords = () => dispatch => {
         }))
 }
 
-export const downloadSession = record => dispatch => {
-    axios.download('records', { baseURL: PublicURL + ':5001/nox/api/' })
-        .then(res => dispatch({
-            type: DOWNLOAD_RECORD,
-            payload: res.record
-        }))
-}
+// export const downloadSession = record => dispatch => {
+//     axios.download('records', { baseURL: PublicURL + ':5001/nox/api/' })
+//         .then(res => dispatch({
+//             type: DOWNLOAD_RECORD,
+//             payload: res.record
+//         }))
+// }
 
 export const addRecord = (record) => dispatch => {
     axios

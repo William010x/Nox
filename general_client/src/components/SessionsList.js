@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
+import { Container, ListGroup, ListGroupItem, Button} from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+// import SessionTab  from "./SessionTab";
 import { connect } from "react-redux";
 import {
   getCourses,
-  addCourse,
+  getSessions,
   downloadSession
 } from "../actions/sessionActions";
 import PropTypes from "prop-types";
@@ -22,8 +23,6 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
 
 const cookies = new Cookies();
-const sessionID = cookies.get("sesid");
-const PID = cookies.get("pid") || "Furki";
 
 class SessionsList extends Component {
   constructor(props) {
@@ -33,7 +32,7 @@ class SessionsList extends Component {
       pid: cookies.get("pid") || "Furki"
     };
 
-    this.changeBtnValue = this.changeBtnValue.bind(this);
+    // this.changeBtnValue = this.changeBtnValue.bind(this);
   }
 
   static propTypes = {
@@ -48,62 +47,44 @@ class SessionsList extends Component {
     //console.log(getCourses(this.state.pid));
   }
 
-  onDownloadClick = id => {
-    this.props.downloadSession(id);
+  onDownloadClick(course) {
+    this.props.downloadSession(course);
   };
 
-  changeBtnValue() {
-    const newCourse = {
-      pid: PID, //Get from cookies once authentication is up and running
-      courseCode: this.course
-    };
+  // changeBtnValue() {
+  //   const newCourse = {
+  //     pid: PID, //Get from cookies once authentication is up and running
+  //     courseCode: this.course
+  //   };
 
-    this.props.addCourse(newCourse);
-  }
-
+  //   this.props.addCourse(newCourse);
+  // }
+  
   render() {
     const { sessions } = this.props.session;
+    console.log(this.props.session);
     return (
       <Container>
         <ListGroup>
           <TransitionGroup className="sessions-list">
             {sessions.map(course => (
-              <CSSTransition timeout={500} classNames="fade">
-                <ListItem button onClick={this.changeBtnValue.bind(this)}>
+              <CSSTransition timeout={500}>
+                <ListItem >
                   <IconButton
-                    aria-label="add"
-                    key={course}
-                    onClick={this.changeBtnValue}
-                  >
-                    <AddIcon />
+                          aria-label="add"
+                        >
+                  <AddIcon />
                   </IconButton>
-                  <ListItemText primary={course} />
+                  <ListItemText primary={course}/>
                   <Button
-                    color="dark"
-                    style={{ marginBottom: "2rem" }}
-                    onClick={this.toggle}
-                  >
-                    Download Session Data
+                      color="dark"
+                      style={{ marginBottom: "2rem" }}
+                      onClick = {this.onDownloadClick.bind(this, course)}
+                      >
+                      Download Session Data
                   </Button>
                 </ListItem>
-                {/*
-                {course === "CSC343H5" ?
-                  <Collapse in={open} timeout="auto" unmountOnExit>
-                    <List component="div" disablePadding> {
-                      sessions.map(session =>
-                        <ListItem button className={classes.nested}>
-                          <IconButton
-                            className={classes.button}
-                            aria-label="download">
-                            <DownloadIcon />
-                          </IconButton>
-                          <ListItemText primary={session} />
-                        </ListItem>
-                      )}
-                    </List>
-                  </Collapse>
-                  : null}
-                      */}
+
               </CSSTransition>
             ))}
           </TransitionGroup>
@@ -119,9 +100,10 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getCourses,
-  addCourse,
+  getSessions,
   downloadSession
 })(SessionsList);
+
 
 /*
 import React, { useState } from 'react';
