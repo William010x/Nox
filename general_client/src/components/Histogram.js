@@ -46,9 +46,13 @@ export class Histogram extends Component {
               enabled: true
             },
             scales: {
-              scaleOverride: true,
-              scaleStartValue: 0,
-              scaleStepWith: 1
+              yAxes: [{
+                ticks: {
+                  stepSize: 5,
+                  max: 50
+                }
+              }]
+              
             },
             responsive: true,
           }}
