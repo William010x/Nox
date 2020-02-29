@@ -169,11 +169,11 @@ io.on("connection", socket => {
     ) {
       sesidToDataHashmap[JsonParameters.sesid] = {
         goodStudents: 0,
-        oldGoodStudents: [0, 0, 0],
+        oldGoodStudents: [0],
         okayStudents: 0,
-        oldOkayStudents: [0, 0, 0],
+        oldOkayStudents: [0],
         confusedStudents: 0,
-        oldConfusedStudents: [0, 0, 0],
+        oldConfusedStudents: [0],
         totalStudents: 0,
         socketID: null
       };
@@ -257,11 +257,11 @@ function NumberOfStudentsCalculation(JsonParameters) {
   ) {
     sesidToDataHashmap[JsonParameters.sesid] = {
       goodStudents: 0,
-      oldGoodStudents: [0, 0, 0],
+      oldGoodStudents: [0],
       okayStudents: 0,
-      oldOkayStudents: [0, 0, 0],
+      oldOkayStudents: [0],
       confusedStudents: 0,
-      oldConfusedStudents: [0, 0, 0],
+      oldConfusedStudents: [0],
       totalStudents: 0,
       socketID: null
     };
@@ -344,32 +344,19 @@ function NumberOfStudentsCalculation(JsonParameters) {
     avgRGB = "rgba(255,255,0,0.3)";
   }
   
-  var delayTime = new Date();
-  var delayTime1 = new Date();
-  var delayTime2 = new Date();
-  var delayTime3 = new Date();
-  delayTime1 = delayTime1.setTime(delayTime1.getTime() - delay);
-  getOldRecords(delayTime1, 0, JsonParameters);
-  delayTime2 = delayTime2.setTime(delayTime2.getTime() - delay*2/3);
-  getOldRecords(delayTime2, 1, JsonParameters);
-  delayTime3 = delayTime3.setTime(delayTime3.getTime() - delay/3);
-  getOldRecords(delayTime3, 2, JsonParameters);
-  // Records.find({ sessionID: JsonParameters.sesid, timeStamp: {$lt: delayTime1} }, function(err, result) {
-  //   if (err) {
-  //     // Internal Error
-  //     console.log(err);
-  //     throw err;
-  //   } else {
-  //     console.log(result);
-  //   }
-  // });
-  
-  // console.log("____________");
-  // console.log(sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents);
-  // console.log(sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents);
-  // console.log(sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents);
-  // console.log("____________");
-  // console.log("//////////" + JsonParameters.rating + "//////////");
+  sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents.push(sesidToDataHashmap[JsonParameters.sesid].goodStudents);
+  sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents.push(sesidToDataHashmap[JsonParameters.sesid].okayStudents);
+  sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents.push(sesidToDataHashmap[JsonParameters.sesid].confusedStudents);
+  // var delayTime = new Date();
+  // var delayTime1 = new Date();
+  // var delayTime2 = new Date();
+  // var delayTime3 = new Date();
+  // delayTime1 = delayTime1.setTime(delayTime1.getTime() - delay);
+  // getOldRecords(delayTime1, 0, JsonParameters);
+  // delayTime2 = delayTime2.setTime(delayTime2.getTime() - delay*2/3);
+  // getOldRecords(delayTime2, 1, JsonParameters);
+  // delayTime3 = delayTime3.setTime(delayTime3.getTime() - delay/3);
+  // getOldRecords(delayTime3, 2, JsonParameters);
 
   // Create JSON to return
   var studentCount = {
@@ -379,7 +366,7 @@ function NumberOfStudentsCalculation(JsonParameters) {
     okayStudents: sesidToDataHashmap[JsonParameters.sesid].okayStudents,
     oldOkayStudents: sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents,
     confusedStudents: sesidToDataHashmap[JsonParameters.sesid].confusedStudents,
-    oldConfusedStudents: sesidToDataHashmap[JsonParameters.sesid].confusedStudents,
+    oldConfusedStudents: sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents,
     average_rating: average_rating,
     avgRGB: avgRGB
   };
@@ -389,13 +376,8 @@ function NumberOfStudentsCalculation(JsonParameters) {
 
 function getOldRecords(delayTime, index, JsonParameters) {
   // Records.find({ sessionID: JsonParameters.sesid, timeStamp: {$lt: delayTime} }, function(err, result) {
-  //   if (err) {
-  //     // Internal Error
-  //     console.log(err);
-  //     throw err;
-  //   } else {
     Records.aggregate([
-      { $match: {sessionID: JsonParameters.sesid }},
+      { $match: {sessionID: JsonParameters.sesid, timeStamp: {$lt: delayTime} }},
       { $group: {_id: "$value", students: { $sum: 1} }}], function (err, result) {
       if (err) {
         // Internal Error
@@ -417,12 +399,6 @@ function getOldRecords(delayTime, index, JsonParameters) {
             }
           }
         }
-        // console.log("-------------");
-        // console.log(sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents[index]);
-        // console.log(sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents[index]);
-        // console.log(sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents[index]);
-        // console.log("-------------");
       }
     });
-    // }});
 }
