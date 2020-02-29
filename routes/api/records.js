@@ -31,7 +31,7 @@ router.post('/', (req, res) => {
         Record.find({ studentID: req.body.studentID, sessionID: req.body.sessionID }, function (err, result) {
             var delayTime = new Date();
             delayTime = delayTime.setTime(delayTime.getTime() - delay);
-            //console.log(delayTime);
+            console.log(delayTime);
             if (err) { // Internal Error
                 //callback(err);
                 res.status(err.status).send({ success: false });

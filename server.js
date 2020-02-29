@@ -348,12 +348,21 @@ function NumberOfStudentsCalculation(JsonParameters) {
   var delayTime1 = new Date();
   var delayTime2 = new Date();
   var delayTime3 = new Date();
-  var delayTime1 = delayTime1.setTime(delayTime.getTime() - delay);
+  delayTime1 = delayTime1.setTime(delayTime1.getTime() - delay);
   getOldRecords(delayTime1, 0, JsonParameters);
-  var delayTime2 = delayTime2.setTime(delayTime.getTime() - delay*2/3);
+  delayTime2 = delayTime2.setTime(delayTime2.getTime() - delay*2/3);
   getOldRecords(delayTime2, 1, JsonParameters);
-  var delayTime3 = delayTime3.setTime(delayTime.getTime() - delay/3);
+  delayTime3 = delayTime3.setTime(delayTime3.getTime() - delay/3);
   getOldRecords(delayTime3, 2, JsonParameters);
+  // Records.find({ sessionID: JsonParameters.sesid, timeStamp: {$lt: delayTime1} }, function(err, result) {
+  //   if (err) {
+  //     // Internal Error
+  //     console.log(err);
+  //     throw err;
+  //   } else {
+  //     console.log(result);
+  //   }
+  // });
   
   console.log("____________");
   console.log(sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents);
@@ -379,36 +388,42 @@ function NumberOfStudentsCalculation(JsonParameters) {
 }
 
 function getOldRecords(delayTime, index, JsonParameters) {
-  console.log(delayTime);
   //Record.find({ sessionID: JsonParameters.sesid, timeStamp: {$lt: delayTime} }, function (err, result) {
-  Records.aggregate([
-    { $match: {sessionID: JsonParameters.sesid, timeStamp: {$gt: delayTime} }},
-    { $group: {_id: "$value", students: { $sum: 1} }}], function (err, result) {
+  Records.find({ sessionID: JsonParameters.sesid, timeStamp: {$lt: delayTime} }, function(err, result) {
     if (err) {
       // Internal Error
       console.log(err);
       throw err;
-    } else if (result != undefined) {
-      //console.log(result);
-      for (i = 0; i < 3; i++) {
-        //console.log(result[i]);
-        if (result[i] != undefined && result[i]._id != undefined) {
-          if (result[i]._id == 1) {
-            sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents[index] = result[i].students;
+    } else {
+      Records.aggregate([
+        //{ $match: {sessionID: JsonParameters.sesid, timeStamp: {$lt: delayTime} }},
+        { $group: {_id: "$value", students: { $sum: 1} }}], function (err, result) {
+        if (err) {
+          // Internal Error
+          console.log(err);
+          throw err;
+        } else if (result != undefined) {
+          //console.log(result);
+          for (i = 0; i < 3; i++) {
+            //console.log(result[i]);
+            if (result[i] != undefined && result[i]._id != undefined) {
+              if (result[i]._id == 1) {
+                sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents[index] = result[i].students;
+              }
+              else if (result[i]._id == 2) {
+                sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents[index] = result[i].students;
+              }
+              else if (result[i]._id == 3) {
+                sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents[index] = result[i].students;
+              }
+            }
           }
-          else if (result[i]._id == 2) {
-            sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents[index] = result[i].students;
-          }
-          else if (result[i]._id == 3) {
-            sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents[index] = result[i].students;
-          }
+          // console.log("-------------");
+          // console.log(sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents[index]);
+          // console.log(sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents[index]);
+          // console.log(sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents[index]);
+          // console.log("-------------");
         }
-      }
-      // console.log("-------------");
-      // console.log(sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents[index]);
-      // console.log(sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents[index]);
-      // console.log(sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents[index]);
-      // console.log("-------------");
-    }
-  });
+      });
+    }});
 }
