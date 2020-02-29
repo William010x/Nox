@@ -29,8 +29,8 @@ router.post('/', (req, res) => {
     if (req.body.isComment != undefined && req.body.isComment != null && req.body.isComment == "true" &&
      req.body.comment.length < msgMaxLen && req.body.comment.length > 0) {
         Record.find({ studentID: req.body.studentID, sessionID: req.body.sessionID }, function (err, result) {
-            var delayTime = new Date()
-            delaytime = delayTime.setTime(delayTime.getTime() - delay);
+            var delayTime = new Date();
+            delayTime = delayTime.setTime(delayTime.getTime() - delay);
             //console.log(delayTime);
             if (err) { // Internal Error
                 //callback(err);

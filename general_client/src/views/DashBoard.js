@@ -90,7 +90,7 @@ export class Dashboard extends Component {
               labels: ["10", "20", "30", "40", "50", "60"],
               datasets: [
                 {
-                  label: "Too fast",
+                  label: "Confused",
                   fill: false,
                   data: [20, 30, 25, 40, 50, 30],
                   tension: 0,
@@ -100,7 +100,7 @@ export class Dashboard extends Component {
                   hoverBorderColor: "#000"
                 },
                 {
-                  label: "Too slow",
+                  label: "Good",
                   fill: false,
                   data: [10, 20, 11, 7, 10, 12],
                   tension: 0,

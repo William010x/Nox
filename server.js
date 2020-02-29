@@ -8,9 +8,11 @@ const sessions = require("./routes/api/sessions");
 const student = require("./routes/api/student");
 const records = require("./routes/api/records");
 const Professor = require("./models/Professor");
+const Records = require("./models/Records");
 var fs = require("fs");
 var cors = require("cors");
 const cookieParser = require("cookie-parser");
+const delay = 10000; // 10000 ms = 60 sec
 
 // In production or development?
 const environment = process.env.NODE_ENV || "development";
@@ -167,8 +169,11 @@ io.on("connection", socket => {
     ) {
       sesidToDataHashmap[JsonParameters.sesid] = {
         goodStudents: 0,
+        oldGoodStudents: [0, 0, 0],
         okayStudents: 0,
+        oldOkayStudents: [0, 0, 0],
         confusedStudents: 0,
+        oldConfusedStudents: [0, 0, 0],
         totalStudents: 0,
         socketID: null
       };
@@ -252,8 +257,11 @@ function NumberOfStudentsCalculation(JsonParameters) {
   ) {
     sesidToDataHashmap[JsonParameters.sesid] = {
       goodStudents: 0,
+      oldGoodStudents: [0, 0, 0],
       okayStudents: 0,
+      oldOkayStudents: [0, 0, 0],
       confusedStudents: 0,
+      oldConfusedStudents: [0, 0, 0],
       totalStudents: 0,
       socketID: null
     };
@@ -335,16 +343,72 @@ function NumberOfStudentsCalculation(JsonParameters) {
     //okay
     avgRGB = "rgba(255,255,0,0.3)";
   }
+  
+  var delayTime = new Date();
+  var delayTime1 = new Date();
+  var delayTime2 = new Date();
+  var delayTime3 = new Date();
+  var delayTime1 = delayTime1.setTime(delayTime.getTime() - delay);
+  getOldRecords(delayTime1, 0, JsonParameters);
+  var delayTime2 = delayTime2.setTime(delayTime.getTime() - delay*2/3);
+  getOldRecords(delayTime2, 1, JsonParameters);
+  var delayTime3 = delayTime3.setTime(delayTime.getTime() - delay/3);
+  getOldRecords(delayTime3, 2, JsonParameters);
+  
+  console.log("____________");
+  console.log(sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents);
+  console.log(sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents);
+  console.log(sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents);
+  console.log("____________");
+  console.log("//////////" + JsonParameters.rating + "//////////");
 
   // Create JSON to return
   var studentCount = {
     totalStudents: sesidToDataHashmap[JsonParameters.sesid].totalStudents,
     goodStudents: sesidToDataHashmap[JsonParameters.sesid].goodStudents,
+    oldGoodStudents: sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents,
     okayStudents: sesidToDataHashmap[JsonParameters.sesid].okayStudents,
+    oldOkayStudents: sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents,
     confusedStudents: sesidToDataHashmap[JsonParameters.sesid].confusedStudents,
+    oldConfusedStudents: sesidToDataHashmap[JsonParameters.sesid].confusedStudents,
     average_rating: average_rating,
     avgRGB: avgRGB
   };
 
   return studentCount;
+}
+
+function getOldRecords(delayTime, index, JsonParameters) {
+  console.log(delayTime);
+  //Record.find({ sessionID: JsonParameters.sesid, timeStamp: {$lt: delayTime} }, function (err, result) {
+  Records.aggregate([
+    { $match: {sessionID: JsonParameters.sesid, timeStamp: {$gt: delayTime} }},
+    { $group: {_id: "$value", students: { $sum: 1} }}], function (err, result) {
+    if (err) {
+      // Internal Error
+      console.log(err);
+      throw err;
+    } else if (result != undefined) {
+      //console.log(result);
+      for (i = 0; i < 3; i++) {
+        //console.log(result[i]);
+        if (result[i] != undefined && result[i]._id != undefined) {
+          if (result[i]._id == 1) {
+            sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents[index] = result[i].students;
+          }
+          else if (result[i]._id == 2) {
+            sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents[index] = result[i].students;
+          }
+          else if (result[i]._id == 3) {
+            sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents[index] = result[i].students;
+          }
+        }
+      }
+      // console.log("-------------");
+      // console.log(sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents[index]);
+      // console.log(sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents[index]);
+      // console.log(sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents[index]);
+      // console.log("-------------");
+    }
+  });
 }
