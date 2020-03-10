@@ -5,6 +5,7 @@ var cors = require("cors");
 var path = require("path");
 const professor = require("./routes/api/professor");
 const sessions = require("./routes/api/sessions");
+const courses = require("./routes/api/courses");
 const student = require("./routes/api/student");
 const records = require("./routes/api/records");
 const Professor = require("./models/Professor");
@@ -83,6 +84,7 @@ mongoose
 // Create paths for each API (routes)
 app.use("/nox/api/professor", professor);
 app.use("/nox/api/sessions", sessions);
+app.use("/nox/api/courses", courses);
 app.use("/nox/api/student", student);
 app.use("/nox/api/records", records);
 

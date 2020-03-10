@@ -52,12 +52,12 @@ class SessionsList extends Component {
     this.props.downloadSession(id);
   };
 
-  changeBtnValue() {
+  changeBtnValue(course) {
     const newCourse = {
       pid: PID, //Get from cookies once authentication is up and running
-      courseCode: this.course
+      courseCode: course
     };
-
+    
     this.props.addCourse(newCourse);
   }
 
@@ -69,11 +69,11 @@ class SessionsList extends Component {
           <TransitionGroup className="sessions-list">
             {sessions.map(course => (
               <CSSTransition timeout={500} classNames="fade">
-                <ListItem button onClick={this.changeBtnValue.bind(this)}>
+                <ListItem button >
                   <IconButton
                     aria-label="add"
                     key={course}
-                    onClick={this.changeBtnValue}
+                    onClick={this.changeBtnValue.bind(this, course)}
                   >
                     <AddIcon />
                   </IconButton>
