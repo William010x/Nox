@@ -65,20 +65,6 @@ router.get('/AllSessions', (req, res) => {
     })
 });
 
-router.get('/FindCourse', (req, res) => {
-    Session.find({ pid: req.query.pid }).distinct('courseCode', req.query.sesid, function (err, result) { //see the use of distinct
-        if (err) { // Internal Error
-            //callback(err);
-            res.status(err.status).send({ success: false });
-            return;
-        }
-        else {
-            console.log('THIS IS IT');
-            res.json(result);
-        }
-    });
-});
-
 // If Session not found
 // res.send({ success: false });
 

@@ -3,8 +3,8 @@ import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
 import {
-  getCourses,
-  addCourse,
+  getSessions,
+  addSession,
   downloadSession
 } from "../actions/sessionActions";
 import PropTypes from "prop-types";

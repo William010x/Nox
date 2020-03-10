@@ -10,7 +10,7 @@ import {
     Input
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { addCourse } from '../actions/sessionActions';
+import { addCourse } from '../actions/courseActions';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();

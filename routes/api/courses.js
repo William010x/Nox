@@ -4,6 +4,20 @@ const router = express.Router();
 //Courses Model
 const Course = require('../../models/Courses');
 
+router.get('/FindCourse', (req, res) => {
+    Session.find({ pid: req.query.pid }).distinct('courseCode', req.query.sesid, function (err, result) { //see the use of distinct
+        if (err) { // Internal Error
+            //callback(err);
+            res.status(err.status).send({ success: false });
+            return;
+        }
+        else {
+            console.log('THIS IS IT');
+            res.json(result);
+        }
+    });
+});
+
 // @route   POST api/courses
 // @desc    Create a course
 // @access  Private localhost:3000 (front-end)
