@@ -29,7 +29,7 @@ export const addCourse = (Course) => dispatch => {
                 type: ADD_COURSE,
                 payload: res.data
             })
-            //cookies.set('Prof_sesid', res.data.sesid);
+            cookies.set('Prof_sesid', res.data.sesid);
             window.location = "/nox/professor/dashboard";
         })
 }

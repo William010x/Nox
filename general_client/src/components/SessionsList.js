@@ -7,7 +7,7 @@ import {
   addSession,
   downloadSession
 } from "../actions/sessionActions";
-import { getCourses, addCourse } from "../actions/courseActions";
+import { getCourses } from "../actions/courseActions";
 import PropTypes from "prop-types";
 import Cookies from "universal-cookie";
 
@@ -21,6 +21,7 @@ import DownloadIcon from "@material-ui/icons/SaveAlt";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
+import SessionItemModal from "./SessionItemModal";
 
 const cookies = new Cookies();
 const sessionID = cookies.get("sesid");
@@ -54,12 +55,12 @@ class SessionsList extends Component {
   };
 
   changeBtnValue(course) {
-    const newCourse = {
+    const newSession = {
       pid: PID, //Get from cookies once authentication is up and running
       courseCode: course
     };
     
-    this.props.addCourse(newCourse);
+    this.props.addSession(newSession);
   }
 
   render() {
@@ -71,13 +72,14 @@ class SessionsList extends Component {
             {sessions.map(course => (
               <CSSTransition timeout={500} classNames="fade">
                 <ListItem button >
-                  <IconButton
+                  <SessionItemModal course={course}/>
+                  {/*<IconButton
                     aria-label="add"
                     key={course}
                     onClick={this.changeBtnValue.bind(this, course)}
                   >
                     <AddIcon />
-                  </IconButton>
+                  </IconButton>*/}
                   <ListItemText primary={course} />
                   <Button
                     color="dark"
@@ -120,7 +122,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getCourses,
-  addCourse,
+  addSession,
   downloadSession
 })(SessionsList);
 
