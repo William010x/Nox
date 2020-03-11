@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_COURSES, ADD_COURSE, COURSES_LOADING } from './types';
+import { GET_COURSES, ADD_COURSE, COURSES_LOADING, GET_SESSIONS } from './types';
 import Cookies from 'universal-cookie';
 import { PublicURL } from '../config/constants';
 const cookies = new Cookies();
@@ -12,7 +12,7 @@ export const getCourses = (pid) => dispatch => {
         params: { pid: pid }
     })
         .then(res => dispatch({
-            type: GET_COURSES,
+            type: GET_SESSIONS,
             payload: res.data
         }))
 }

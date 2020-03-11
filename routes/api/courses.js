@@ -3,6 +3,13 @@ const router = express.Router();
 
 //Courses Model
 const Course = require('../../models/Courses');
+const Session = require('../../models/Sessions');
+
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+}
 
 router.get('/FindCourse', (req, res) => {
     Session.find({ pid: req.query.pid }).distinct('courseCode', req.query.sesid, function (err, result) { //see the use of distinct

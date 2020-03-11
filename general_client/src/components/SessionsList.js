@@ -7,6 +7,7 @@ import {
   addSession,
   downloadSession
 } from "../actions/sessionActions";
+import { getCourses, addCourse } from "../actions/courseActions";
 import PropTypes from "prop-types";
 import Cookies from "universal-cookie";
 

@@ -32,6 +32,7 @@ export const getSessions = (pid, courseCode) => dispatch => {
         }))
 }
 
+
 export const downloadSession = (sesid) => dispatch => {
     axios.download(`/api/sessions/${sesid}`).then(res =>
         dispatch({
