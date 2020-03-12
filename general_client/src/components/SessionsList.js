@@ -4,7 +4,6 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { connect } from "react-redux";
 import {
   getSessions,
-  addSession,
   downloadSession
 } from "../actions/sessionActions";
 import { getCourses } from "../actions/courseActions";
@@ -35,7 +34,7 @@ class SessionsList extends Component {
       pid: cookies.get("pid") || "Furki"
     };
 
-    this.changeBtnValue = this.changeBtnValue.bind(this);
+    //this.changeBtnValue = this.changeBtnValue.bind(this);
   }
 
   static propTypes = {
@@ -54,14 +53,14 @@ class SessionsList extends Component {
     this.props.downloadSession(id);
   };
 
-  changeBtnValue(course) {
-    const newSession = {
-      pid: PID, //Get from cookies once authentication is up and running
-      courseCode: course
-    };
+  // changeBtnValue(course) {
+  //   const newSession = {
+  //     pid: PID, //Get from cookies once authentication is up and running
+  //     courseCode: course
+  //   };
     
-    this.props.addSession(newSession);
-  }
+  //   this.props.addSession(newSession);
+  // }
 
   render() {
     const { sessions } = this.props.session;
@@ -122,7 +121,6 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getCourses,
-  addSession,
   downloadSession
 })(SessionsList);
 

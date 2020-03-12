@@ -3,7 +3,6 @@ const router = express.Router();
 
 //Courses Model
 const Course = require('../../models/Courses');
-const Session = require('../../models/Sessions');
 
 function getRandomIntInclusive(min, max) {
     min = Math.ceil(min);
@@ -12,7 +11,7 @@ function getRandomIntInclusive(min, max) {
 }
 
 router.get('/FindCourse', (req, res) => {
-    Session.find({ pid: req.query.pid }).distinct('courseCode', req.query.sesid, function (err, result) { //see the use of distinct
+    Course.find({ pid: req.query.pid }).distinct('courseCode', req.query.sesid, function (err, result) { //see the use of distinct
         if (err) { // Internal Error
             //callback(err);
             res.status(err.status).send({ success: false });
@@ -35,12 +34,12 @@ router.post('/', async (req, res) => {
     var MAX_TRIES = 10;
     
     while (!unique && n < MAX_TRIES) {
-        console.log("sesid=", id);
-        await Session.findOne({ sesid: id }, function (err, result) {
+        console.log("courseid=", id);
+        await Course.findOne({ courseid: id }, function (err, result) {
             if (err) { // Internal error
                 res.status(err.status).send({ success: false });
                 return;
-            } else if (result && result.sesid === id) { // Session exists
+            } else if (result && result.sesid === id) { // Course exists
                 id = getRandomIntInclusive(100000, 999999);
             } else {
                 unique = true;
@@ -49,14 +48,14 @@ router.post('/', async (req, res) => {
         n++;
     }
 
-    console.log("New session created! sesid=", id);
-    const newSession = new Session({
+    console.log("New course created! courseid=", id);
+    const newCourse = new Course({
         courseCode: req.body.courseCode,
         pid: req.body.pid,
-        sesid: id
+        courseid: id
     });
 
-    newSession.save().then(sessions => res.json(sessions))
+    newCourse.save().then(course => res.json(course))
 });
 
 module.exports = router;

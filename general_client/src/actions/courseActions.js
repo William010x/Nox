@@ -12,6 +12,7 @@ export const getCourses = (pid) => dispatch => {
         params: { pid: pid }
     })
         .then(res => dispatch({
+            // TO DO: CHANGE TO COURSES
             type: GET_SESSIONS,
             payload: res.data
         }))
@@ -29,8 +30,8 @@ export const addCourse = (Course) => dispatch => {
                 type: ADD_COURSE,
                 payload: res.data
             })
-            cookies.set('Prof_sesid', res.data.sesid);
-            window.location = "/nox/professor/dashboard";
+            // cookies.set('Prof_sesid', res.data.sesid);
+            window.location = "/nox/professor/";
         })
 }
 
