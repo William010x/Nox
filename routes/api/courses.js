@@ -11,7 +11,7 @@ function getRandomIntInclusive(min, max) {
 }
 
 router.get('/FindCourse', (req, res) => {
-    Course.find({ pid: req.query.pid }).distinct('courseCode', req.query.sesid, function (err, result) { //see the use of distinct
+    Course.find({ pid: req.query.pid }).distinct('courseCode', function (err, result) { //see the use of distinct
         if (err) { // Internal Error
             //callback(err);
             res.status(err.status).send({ success: false });
@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
             if (err) { // Internal error
                 res.status(err.status).send({ success: false });
                 return;
-            } else if (result && result.sesid === id) { // Course exists
+            } else if (result && result.courseid === id) { // Course exists
                 id = getRandomIntInclusive(100000, 999999);
             } else {
                 unique = true;

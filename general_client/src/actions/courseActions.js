@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_COURSES, ADD_COURSE, COURSES_LOADING, GET_SESSIONS } from './types';
+import { GET_COURSES, ADD_COURSE, COURSES_LOADING } from './types';
 import Cookies from 'universal-cookie';
 import { PublicURL } from '../config/constants';
 const cookies = new Cookies();
@@ -12,8 +12,7 @@ export const getCourses = (pid) => dispatch => {
         params: { pid: pid }
     })
         .then(res => dispatch({
-            // TO DO: CHANGE TO COURSES
-            type: GET_SESSIONS,
+            type: GET_COURSES,
             payload: res.data
         }))
 }
@@ -25,7 +24,7 @@ export const addCourse = (Course) => dispatch => {
     //Course.sesid = sesid;
     axios.post('courses', Course, { baseURL: PublicURL + ':5001/nox/api/' })
         .then(res => {
-            console.log(`Received response from server: ${{ res }}`)
+            console.log(`Received response from server: ${{ res }}`);
             dispatch({
                 type: ADD_COURSE,
                 payload: res.data

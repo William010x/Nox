@@ -40,6 +40,7 @@ class SessionsList extends Component {
   static propTypes = {
     getSessions: PropTypes.func.isRequired,
     session: PropTypes.object.isRequired,
+    course: PropTypes.object.isRequired,
     getCourses: PropTypes.func.isRequired
   };
 
@@ -64,11 +65,12 @@ class SessionsList extends Component {
 
   render() {
     const { sessions } = this.props.session;
+    const { courses } = this.props.course;
     return (
       <Container>
         <ListGroup>
           <TransitionGroup className="sessions-list">
-            {sessions.map(course => (
+            {courses.map(course => (
               <CSSTransition timeout={500} classNames="fade">
                 <ListItem button >
                   <SessionItemModal course={course}/>
@@ -116,7 +118,8 @@ class SessionsList extends Component {
 }
 
 const mapStateToProps = state => ({
-  session: state.session
+  session: state.session,
+  course: state.course
 });
 
 export default connect(mapStateToProps, {

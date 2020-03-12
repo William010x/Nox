@@ -10,13 +10,13 @@ export default function (state = initialState, action) {
         case GET_COURSES:
             return {
                 ...state,
-                sessions: action.payload,
+                courses: action.payload,
                 loading: false
             };
         case ADD_COURSE:
             return {
                 ...state,
-                sessions: [action.payload, ...state.courses]
+                //courses: [action.payload, ...state.courses]
             };
         case COURSES_LOADING:
             return {

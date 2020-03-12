@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_SESSIONS, ADD_SESSION, ADD_COURSE, DOWNLOAD_SESSION, SESSIONS_LOADING } from './types';
+import { GET_SESSIONS, ADD_SESSION, DOWNLOAD_SESSION, SESSIONS_LOADING } from './types';
 import Cookies from 'universal-cookie';
 import { PublicURL } from '../config/constants';
 const cookies = new Cookies();
@@ -48,10 +48,9 @@ export const addSession = (Session) => dispatch => {
     //Session.sesid = sesid;
     axios.post('sessions', Session, { baseURL: PublicURL + ':5001/nox/api/' })
         .then(res => {
-            console.log(`Received response from server: ${{ res }}`)
+            console.log(`Received response from server: ${{ res }}`);
             dispatch({
-                type: ADD_COURSE,
-                // TO DO: CHANGE TO SESSION
+                type: ADD_SESSION,
                 payload: res.data
             })
             cookies.set('Prof_sesid', res.data.sesid);
