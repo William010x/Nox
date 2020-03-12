@@ -101,6 +101,8 @@ class SessionsList extends Component {
         </ListGroup>
       </Container>
     );
+  }
+}
   
 const mapStateToProps = state => ({
   session: state.session,
