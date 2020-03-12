@@ -1,12 +1,10 @@
 import React, { Component } from "react";
-//import classes from "./Dashboard.module.css";
-import LineGraph from "../components/LineGraph";
 import Histogram from "../components/Histogram";
 import io from "socket.io-client";
 import Cookies from "universal-cookie";
 import "../CSS/Chat.css";
 import "../CSS/Histogram.css";
-import { Button, FormControl, Container, Row } from "react-bootstrap";
+import { Button} from "react-bootstrap";
 import { PublicURL } from "../config/constants";
 import LineChart from "../components/LineChart";
 
@@ -18,17 +16,15 @@ const sessionID = cookies.get("Prof_sesid");
 // This will allow the Professor to recieve Data from the server
 let socket;
 
-// TO DO: Assign sesID when you create one
-let sesID = "iwq_ZWuh";
-
 console.log("THIS IS PROFESSOR CLIENT SOCKET INFO: ", socket);
 
 export class Dashboard extends Component {
   constructor(props) {
     super(props);
+    
     this.messages = React.createRef();
     //  this.scrollToBottom = this.scrollToBottom.bind(this);
-
+    this.toggle = this.toggle.bind(this);
     this.state = {
       // Initially, we have 0 students in each category.
 
@@ -38,7 +34,8 @@ export class Dashboard extends Component {
       confusedStudents: 0,
       average_rating: null,
       allMessages: [],
-      avgColorRGB: "grey"
+      avgColorRGB: "grey",
+      display: true
     };
 
     var that = this;
@@ -143,8 +140,13 @@ export class Dashboard extends Component {
     this.scrollToBottom();
   }
 
+  toggle() {
+    this.setState({
+        display: !this.state.display,
+    });
+  }
+
   render() {
-    const { data, labels } = this.state;
     return (
       <div>
         <div className="header" style={{ position: "relative", left: "1%" }}>
@@ -171,8 +173,8 @@ export class Dashboard extends Component {
         </div>
 
         <div>
-          <Histogram chartData={this.state.chartData}></Histogram>
-
+          { this.state.display && <Histogram chartData={this.state.chartData}></Histogram>}
+          { !this.state.display && <LineChart chartData={this.state.lineChartData}></LineChart>}
           <div className="chat_window">
             <div className="top_menu">
               <div className="buttons">
@@ -196,9 +198,7 @@ export class Dashboard extends Component {
 
             <div className="bottom_wrapper clearfix"></div>
           </div>
-        </div>
-        <div>
-          <LineChart chartData={this.state.lineChartData}></LineChart>
+          <Button style={{ width: 300 }} variant="dark" onClick={this.toggle}>Toggle</Button>
         </div>
       </div>
 

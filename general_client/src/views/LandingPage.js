@@ -4,13 +4,10 @@ import { Button, FormControl, Container, Row } from "react-bootstrap";
 import Image from 'react-bootstrap/Image'
 import NoxLogo from '../images/noxLogo.png'
 import axios from 'axios';
-import { callbackify } from 'util';
 import { PublicURL } from '../config/constants';
 
 // Establish socket connection
 // Connecting to the server from clients end
-
-
 
 axios.defaults.withCredentials = true
 
@@ -18,7 +15,6 @@ export default class LandingPage extends Component {
     constructor(props) {
         super(props);
         this.codeBox = React.createRef();
-
 
         // Binding our custom functions to .this
         this.state = {
@@ -54,8 +50,6 @@ export default class LandingPage extends Component {
     }
 
     // Socket Function
-
-
     // Enter Button clicked
     // To do: check if empty code
     _onButtonClick() {
@@ -68,7 +62,6 @@ export default class LandingPage extends Component {
     onJoinSession(codeValue) {
         codeValue.preventDefault();
 
-
         this.setState({
             code: this.codeBox.current.value
         });
@@ -77,8 +70,6 @@ export default class LandingPage extends Component {
             sesid: this.codeBox.current.value
         }
         console.log(joinSession)
-
-
 
         // Attempt to join a live session
         axios.post(PublicURL + ':5001/nox/api/sessions/JoinSession', joinSession).then(res => {
@@ -90,7 +81,6 @@ export default class LandingPage extends Component {
             });
             const path = '/nox/student';
             this.props.history.push(path);
-
 
         }).catch((error, res) => {
             console.log(this.state.borderColor);

@@ -3,7 +3,6 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { addRecord, addCommentRecord } from '../actions/recordActions';
 import { connect } from 'react-redux';
 import good from '../images/good.png';
-import { Route, Redirect } from 'react-router'
 import okay from '../images/okay.png';
 import confused from '../images/confused.png';
 import axios from 'axios';
@@ -31,10 +30,6 @@ class StudentView extends Component {
             isComment: 'false',
             allMessages: []
         };
-
-        //if (cookies.get('sid') == undefined || cookies.get('sesid') == undefined) {
-        //   window.location = "/";
-        // }
     }
 
     sendComment(btnValue) {
@@ -52,18 +47,15 @@ class StudentView extends Component {
         // Send comment via API
         this.props.addCommentRecord(newRecord2);
 
-
-
         this.setState({
             comment: this.messageBox.current.value,
             isComment: 'true',
             showPopup: true,
             allMessages: this.state.allMessages.concat(this.messageBox.current.value)
         }, () => {
-
-            //console.log(newRecord2);
             // Clear input box
             this.messageBox.current.value = '';
+
             // Display success message
             setTimeout(() => {
                 this.setState(() => ({ showPopup: false }))
@@ -101,15 +93,13 @@ componentDidUpdate() {
   this.scrollToBottom();
 }
     render() {
-        if (cookies.get('sid') == undefined || cookies.get('sesid') == undefined) {
+        if (cookies.get('sid') === undefined || cookies.get('sesid') === undefined) {
             //return <Redirect to='/' />;
             window.location = "/";
         }
         else {
             return (
                 <div>
-
-
                     <div className='student_buttons'>
                         <ButtonGroup className='student_btn_layout' >
                             <button value={3} onClick={this.changeBtnValue} className='student_button'><img src={good} className='student_img' />
@@ -130,24 +120,16 @@ componentDidUpdate() {
                             position: 'relative',
                             borderRadius: '10px',
                             float: 'none',
-
                             align: 'center',
                             transform: 'translateX(-50 %)',
-
-
-
                         }}>Message Succesfully Sent.</div>}
                         <div className="top_menu">
-
                             <div className="buttons">
                                 <div className="button exit"></div>
                                 <div className="button minimize"></div>
                                 <div className="button maximize"></div>
                             </div>
-
-
                             <div className="title">Ask a Question</div>
-
                         </div>
 
                         <ul id="messages" className="messages">
@@ -186,10 +168,7 @@ const mapStateToProps = state => ({
 
 });
 
-
 export default connect(
     mapStateToProps,
     { addRecord, addCommentRecord }
 )(StudentView);
-
-

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { Button, FormControl, Container, Row } from "react-bootstrap";
 
 export class Histogram extends Component {
   //Initial state of the Histogram, Waits for data to come in. 
@@ -46,9 +45,13 @@ export class Histogram extends Component {
               enabled: true
             },
             scales: {
-              scaleOverride: true,
-              scaleStartValue: 0,
-              scaleStepWith: 1
+              yAxes: [{
+                ticks: {
+                  stepSize: 5,
+                  max: 50
+                }
+              }]
+              
             },
             responsive: true,
           }}

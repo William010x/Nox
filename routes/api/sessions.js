@@ -7,6 +7,8 @@ const uuidv4 = require('uuid/v4');
 //Session Model
 const Session = require('../../models/Sessions');
 
+const Record = require('../../models/Records');
+
 const cookieConfig = {
     //httpOnly: true, // to disable accessing cookie via client side js
     secure: true, // to force https (if you use it)
@@ -177,6 +179,7 @@ router.post('/', async (req, res) => {
     }
 
     console.log("New session created! sesid=", id);
+  
     const newSession = new Session({
         courseCode: req.body.courseCode,
         pid: req.body.pid,
@@ -186,13 +189,59 @@ router.post('/', async (req, res) => {
     newSession.save().then(sessions => res.json(sessions))
 });
 
+//api for getting sessionID here.
+router.get('/sesid', (req, res) =>{
+    console.log(`Received get request for sesid `)
+    // Session.findOne({ sesid: req.body.sesid }, function (err, result) {
+    Session.findOne({ courseCode: req.query.courseCode }, function (err, result) {
+        if (err){
+            console.log("Oh no");
+            res.status(err.status).send({ success: false });
+            return;
+        }
+        else if (result && result.courseCode === req.query.courseCode){
+            res.status(200);
+            res.json(result);
+            console.log(result);
+        }
+        else { // Did not find Session
+            console.log('DID NOT FIND SESSION');
+            res.status(404).send({ success: false, response: 'DID NOT FIND SESSION' });
+            console.log(result);
+        }
+        
+    })
+})
+
+//Below is the query to get the session data
+router.get('/session.txt', (req, res) =>{
+    console.log(`Received get request for session data `+req.query.sesid)
+    //finds the session in the Record Schema, using Records, imported above
+    Record.find({ sessionID: req.query.sesid }, function (err, result) {
+        if (err){
+            console.log("Oh no");
+            res.status(err.status).send({ success: false });
+            return;
+        }
+        else if (result != []){
+            res.status(200);
+            res.json(result);
+        }
+        else { // Did not find Session
+            console.log('DID NOT FIND SESSION');
+            res.status(404).send({ success: false, response: 'DID NOT FIND SESSION' });
+        }
+        
+    })
+})
+
+
 
 // To Do: Currently not working
 // @route   DELETE api/sessions/:sesid
 // @desc    Delete a session
 // @access  Public (Should be private in real production)
 router.delete('/', (req, res) => {
-
     Session.findOne({ sesid: req.body.sesid }, function (err, result) {
         if (err) res.status(404).json({ success: false });
         result => result.remove().then(() => res.json({ success: true }))

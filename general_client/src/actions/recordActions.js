@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_RECORDS, ADD_RECORD, DOWNLOAD_RECORD, RECORDS_LOADING, ADD_STUDENT_COMMENT } from './types'
+import { GET_RECORDS, ADD_RECORD, RECORDS_LOADING, ADD_STUDENT_COMMENT } from './types'
 import { PublicURL } from '../config/constants';
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -9,14 +9,6 @@ export const getRecords = () => dispatch => {
         .then(res => dispatch({
             type: GET_RECORDS,
             payload: res.data
-        }))
-}
-
-export const downloadSession = record => dispatch => {
-    axios.download('records', { baseURL: PublicURL + ':5001/nox/api/' })
-        .then(res => dispatch({
-            type: DOWNLOAD_RECORD,
-            payload: res.record
         }))
 }
 
