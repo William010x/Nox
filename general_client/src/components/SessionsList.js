@@ -4,10 +4,10 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 // import SessionTab  from "./SessionTab";
 import { connect } from "react-redux";
 import {
-  getCourses,
   getSessions,
   downloadSession
 } from "../actions/sessionActions";
+import { getCourses } from "../actions/courseActions";
 import PropTypes from "prop-types";
 import Cookies from "universal-cookie";
 
@@ -22,6 +22,7 @@ import DownloadIcon from "@material-ui/icons/SaveAlt";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
+import SessionItemModal from "./SessionItemModal";
 
 const cookies = new Cookies();
 
@@ -39,6 +40,7 @@ class SessionsList extends Component {
   static propTypes = {
     getSessions: PropTypes.func.isRequired,
     session: PropTypes.object.isRequired,
+    course: PropTypes.object.isRequired,
     getCourses: PropTypes.func.isRequired
   };
 
@@ -52,30 +54,37 @@ class SessionsList extends Component {
     this.props.downloadSession(course);
   };
 
-  // changeBtnValue() {
-  //   const newCourse = {
+  // changeBtnValue(course) {
+  //   const newSession = {
   //     pid: PID, //Get from cookies once authentication is up and running
-  //     courseCode: this.course
+  //     courseCode: course
   //   };
+    
+  //   this.props.addSession(newSession);
+  // }
 
   //   this.props.addCourse(newCourse);
   // }
   
   render() {
     const { sessions } = this.props.session;
+    const { courses } = this.props.course;
     console.log(this.props.session);
     return (
       <Container>
         <ListGroup>
           <TransitionGroup className="sessions-list">
-            {sessions.map(course => (
+            {courses.map(course => (
               <CSSTransition timeout={500}>
                 <ListItem >
-                  <IconButton
-                          aria-label="add"
-                        >
-                  <AddIcon />
-                  </IconButton>
+                  <SessionItemModal course={course}/>
+                   {/*<IconButton
+                    aria-label="add"
+                    key={course}
+                    onClick={this.changeBtnValue.bind(this, course)}
+                  >
+                    <AddIcon />
+                  </IconButton>*/}
                   <ListItemText primary={course}/>
                   <IconButton
                       color="dark"
@@ -94,9 +103,10 @@ class SessionsList extends Component {
     );
   }
 }
-
+  
 const mapStateToProps = state => ({
-  session: state.session
+  session: state.session,
+  course: state.course
 });
 
 export default connect(mapStateToProps, {
