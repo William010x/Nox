@@ -5,9 +5,6 @@ import { Container } from 'reactstrap';
 import { Provider } from 'react-redux';
 import store from '../store';
 
-//Now that I have SessionsList, I need to create another component that creates a div with the course code as the header, based on how many courses the Prof has under his name. 
-//Make a query 
-
 export default class ProfView extends Component {
   render() {
     return (

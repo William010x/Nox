@@ -145,9 +145,7 @@ router.post('/JoinSession', (req, res) => {
             console.log(result);
         }
         //res.json(result);
-
     })
-
 });
 
 // @route   POST api/sessions
@@ -205,7 +203,6 @@ router.get('/sesid', (req, res) => {
             res.status(404).send({ success: false, response: 'DID NOT FIND SESSION' });
             console.log(result);
         }
-
     })
 })
 
@@ -226,12 +223,9 @@ router.get('/session.txt', (req, res) => {
         else { // Did not find Session
             console.log('DID NOT FIND SESSION');
             res.status(404).send({ success: false, response: 'DID NOT FIND SESSION' });
-        }
-
+        }    
     })
 })
-
-
 
 // To Do: Currently not working
 // @route   DELETE api/sessions/:sesid
@@ -243,7 +237,6 @@ router.delete('/', (req, res) => {
         result => result.remove().then(() => res.json({ success: true }))
             .catch(err => res.status(404).json({ success: false }));
     })
-
 });
 
 module.exports = router;

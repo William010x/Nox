@@ -73,8 +73,6 @@ export default class LandingPage extends Component {
 
         // Attempt to join a live session
         axios.post(PublicURL + ':5001/nox/api/sessions/JoinSession', joinSession).then(res => {
-            //console.log(res);
-            //console.log(res.data['success']);
             this.setState({
                 borderColor: res.data['success'] ? 'green' : 'red',
                 showError: res.data['success'] ? false : true

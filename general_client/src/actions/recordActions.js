@@ -13,26 +13,18 @@ export const getRecords = () => dispatch => {
 }
 
 export const addRecord = (record) => dispatch => {
-    axios
-        .post('records', record, { baseURL: PublicURL + ':5001/nox/api/' })
-        .then(res =>
-            dispatch({
+    axios.post('records', record, { baseURL: PublicURL + ':5001/nox/api/' })
+        .then(res => dispatch({
                 type: ADD_RECORD,
                 payload: res.data
             })
         )
-        .catch(err =>
-            console.log(err)
-        );
+        .catch(err => console.log(err));
 };
 
 export const addCommentRecord = (record) => dispatch => {
-
-    axios
-        .post('records', record, { baseURL: PublicURL + ':5001/nox/api/' })
-        .then(res =>
-
-            dispatch({
+    axios.post('records', record, { baseURL: PublicURL + ':5001/nox/api/' })
+        .then(res => dispatch({
                 type: ADD_STUDENT_COMMENT,
                 payload: res.data
             })
