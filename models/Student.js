@@ -34,13 +34,12 @@ const studentSchema = new Schema({
         type: String,
         required: true
     },
-    date: {
+    timeStamp: {
         type: String,
-        default: Date.now
+        default: getDateTime()
     },
     currentSesID: {
         type: String,
-
     }
 });
 

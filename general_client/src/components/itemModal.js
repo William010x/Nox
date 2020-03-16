@@ -10,7 +10,7 @@ import {
     Input
 } from 'reactstrap';
 import { connect } from 'react-redux';
-import { addCourse } from '../actions/sessionActions';
+import { addCourse } from '../actions/courseActions';
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
@@ -63,7 +63,7 @@ class ItemModal extends Component {
                     style={{ marginBottom: '2rem' }}
                     onClick={this.toggle}
                 >
-                    New Session
+                    New Course
           </Button>
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Add a Course</ModalHeader>

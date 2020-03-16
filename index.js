@@ -6,7 +6,7 @@ const path = require('path')
 const fields = ['studentID', 'sessionID', 'dateJoined' , 'value', 'old_value', 'timeRating' , 'comment'];
 const Record = require('./records')
  // Getting sessionID from the front end. Not too sure about this
-const sesID: require('./sessionsList.js').sesID
+const sesID = require('./sessionsList.js').sesID
 
 // After calling the API call, use the Handler (a function) to deal with our get request.
 router.get('/', function (req, res) {

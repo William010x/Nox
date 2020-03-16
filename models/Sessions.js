@@ -37,7 +37,7 @@ const sessionsSchema = new Schema({
         type: String,
         required: true
     },
-    dateStart: { // Date Session Started
+    timeStamp: { // Date Session Started
         type: String,
         default: getDateTime() //YYYY:MM:DD:HH:MM
     },

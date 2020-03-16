@@ -1,8 +1,11 @@
 export const GET_SESSIONS = 'GET_SESSIONS';
 export const ADD_SESSION = 'ADD_SESSION';
-export const ADD_COURSE = 'ADD_COURSE';
 export const DOWNLOAD_SESSION = 'DOWNLOAD_SESSION';
 export const SESSIONS_LOADING = 'SESSIONS_LOADING';
+
+export const ADD_COURSE = 'ADD_COURSE';
+export const GET_COURSES = 'GET_COURSES';
+export const COURSES_LOADING = 'COURSES_LOADING';
 
 export const GET_RECORDS = 'GET_RECORDS';
 export const ADD_RECORD = 'ADD_RECORD';
