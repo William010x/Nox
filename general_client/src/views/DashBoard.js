@@ -158,7 +158,7 @@ export class Dashboard extends Component {
                 display: "inline",
                 left: "3%",
                 position: "relative",
-                maxWidth: "120px",
+                maxWidth: "250px",
                 backgroundColor: this.state.avgColorRGB,
                 fontSize: 30,
                 height: "15%",
