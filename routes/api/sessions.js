@@ -7,6 +7,7 @@ const uuidv4 = require('uuid/v4');
 //Session Model
 const Session = require('../../models/Sessions');
 
+const Course = require('../../models/Courses');
 const Record = require('../../models/Records');
 
 
@@ -208,9 +209,9 @@ router.get('/sesid', (req, res) => {
 
 //Below is the query to get the session data
 router.get('/session.txt', (req, res) => {
-    console.log(`Received get request for session data ` + req.query.sesid)
+    console.log(`Received get request for session data ` + req.query.sessionID)
     //finds the session in the Record Schema, using Records, imported above
-    Record.find({ sessionID: req.query.sesid }, function (err, result) {
+    Record.find({ sessionID: req.query.sessionID }, function (err, result) {
         if (err) {
             console.log("Oh no");
             res.status(err.status).send({ success: false });
@@ -219,6 +220,7 @@ router.get('/session.txt', (req, res) => {
         else if (result != []) {
             res.status(200);
             res.json(result);
+            console.log("Results: "+ result);
         }
         else { // Did not find Session
             console.log('DID NOT FIND SESSION');
@@ -231,12 +233,28 @@ router.get('/session.txt', (req, res) => {
 // @route   DELETE api/sessions/:sesid
 // @desc    Delete a session
 // @access  Public (Should be private in real production)
-router.delete('/', (req, res) => {
-    Session.findOne({ sesid: req.body.sesid }, function (err, result) {
-        if (err) res.status(404).json({ success: false });
-        result => result.remove().then(() => res.json({ success: true }))
-            .catch(err => res.status(404).json({ success: false }));
+router.delete('/delete', (req, res) => {
+    // Session.findOne({ sesid: req.body.sesid }, function (err, result) {
+    //     if (err) res.status(404).json({ success: false });
+    //     result => result.remove().then(() => res.json({ success: true }))
+    //         .catch(err => res.status(404).json({ success: false }));
+    // })
+    Session.deleteOne(req.query, function(err, result){
+        if (err){
+            console.log("delete failed");
+            res.status(err.status).send({success: false});
+            return;
+        }
+        else if (result != []) {
+            res.status(200);
+            res.json(result);
+        }
+        else { // Did not find Session
+            console.log('DID NOT FIND SESSION');
+            res.status(404).send({ success: false, response: 'DID NOT FIND SESSION' });
+        }
     })
+
 });
 
 module.exports = router;

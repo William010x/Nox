@@ -69,7 +69,7 @@ class SessionsList extends Component {
   render() {
     const { sessions } = this.props.session;
     const { courses } = this.props.course;
-    console.log(this.props.session);
+    console.log(courses);
     return (
       <Container>
         <ListGroup>
