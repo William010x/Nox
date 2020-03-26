@@ -76,7 +76,7 @@ class SessionsList extends Component {
           <TransitionGroup className="sessions-list">
             {courses.map(course => (
               <CSSTransition timeout={500}>
-                <ListItem >
+                <ListItem button onClick={this.onDownloadClick.bind(this, course)} >
                   <SessionItemModal course={course}/>
                    {/*<IconButton
                     aria-label="add"
@@ -86,6 +86,11 @@ class SessionsList extends Component {
                     <AddIcon />
                   </IconButton>*/}
                   <ListItemText primary={course}/>
+                  <Button 
+                    className="remove-btn"
+                    color="danger">
+                      &times;
+                  </Button>
                   <IconButton
                       color="dark"
                       style={{ marginBottom: "2rem" }}
