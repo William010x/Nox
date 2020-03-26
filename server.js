@@ -324,15 +324,19 @@ function NumberOfStudentsCalculation(JsonParameters) {
     sesidToDataHashmap[JsonParameters.sesid].totalStudents;
 
   // Calculate RGB corresponding to avg
+  var avgRating = "";
   var avgRGB = "";
   if (average_rating >= 2.25) {
     // good
+    avgRating = "Good";
     avgRGB = "rgba(0,255,0,0.3)";
   } else if (average_rating <= 1.75) {
     // confused
+    avgRating = "Confused";
     avgRGB = "rgba(255,0,0,0.3)";
   } else {
     //okay
+    avgRating = "Okay";
     avgRGB = "rgba(255,255,0,0.3)";
   }
 
@@ -359,7 +363,7 @@ function NumberOfStudentsCalculation(JsonParameters) {
     oldOkayStudents: sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents,
     confusedStudents: sesidToDataHashmap[JsonParameters.sesid].confusedStudents,
     oldConfusedStudents: sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents,
-    average_rating: average_rating,
+    average_rating: avgRating,//average_rating,
     avgRGB: avgRGB
   };
 
