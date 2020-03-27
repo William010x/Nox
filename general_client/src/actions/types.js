@@ -1,5 +1,6 @@
 export const GET_SESSIONS = 'GET_SESSIONS';
 export const ADD_SESSION = 'ADD_SESSION';
+export const VIEW_SESSION = 'VIEW_SESSION';
 export const DOWNLOAD_SESSION = 'DOWNLOAD_SESSION';
 export const SESSIONS_LOADING = 'SESSIONS_LOADING';
 

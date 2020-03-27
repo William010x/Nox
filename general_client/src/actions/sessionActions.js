@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GET_SESSIONS, ADD_SESSION, DOWNLOAD_SESSION, SESSIONS_LOADING, DOWNLOAD_RECORD } from './types';
+import { GET_SESSIONS, ADD_SESSION, VIEW_SESSION, DOWNLOAD_SESSION, SESSIONS_LOADING, DOWNLOAD_RECORD } from './types';
 import Cookies from 'universal-cookie';
 import { PublicURL } from '../config/constants';
 const cookies = new Cookies();
@@ -86,6 +86,23 @@ export const addSession = (Session) => dispatch => {
             cookies.set('Prof_sesid', res.data.sesid);
             window.location = "/nox/professor/dashboard";
         })
+}
+
+export const viewSession = (Session) => dispatch => {
+    console.log(Session);
+    axios.get(PublicURL + `:5001/nox/api/sessions/sesid`, { //this gets the sesid from Session schema
+        params: {
+            courseCode: Session.courseCode,
+        }
+    }).then(res => {
+        console.log(`Received response from server: ${{ res }}`);
+            dispatch({
+                type: VIEW_SESSION,
+                payload: res.data
+            })
+            cookies.set('Prof_sesid', res.data.sesid);
+            window.location = "/nox/professor/sessionView";
+    })
 }
 
 export const setSessionsLoading = () => {
