@@ -21,6 +21,7 @@ import ExpandMore from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
 import SessionItemModal from "./SessionItemModal";
 import SessionTab from "./SessionTab";
+import "../CSS/NestedSessionsList.css";
 
 const cookies = new Cookies();
 
@@ -30,7 +31,7 @@ class SessionsList extends Component {
 
     this.state = {
       pid: cookies.get("pid") || "Furki",
-      open: false
+      open: this.setOpenList(this.props.course.length)
     };
 
     // this.changeBtnValue = this.changeBtnValue.bind(this);
@@ -65,46 +66,55 @@ class SessionsList extends Component {
   //   this.props.addCourse(newCourse);
   // }
 
-  toggleOpen = () => {
+  toggleOpen = index => {
+    const temp = this.state.open;
+    temp[index] = !temp[index];
     this.setState({
-      open: !this.state.open
+      open: temp
     });
   };
 
+  setOpenList = coursesLength => {
+    var openList = new Array(coursesLength);
+    for (var i = 0; i < openList.length; ++i) {
+      openList[i] = false;
+    }
+    return openList;
+  };
+
   render() {
-    //const { sessions } = this.props.session;
     const { courses } = this.props.course;
     console.log(this.props.session);
+
     return (
       <Container>
         <ListGroup>
           <TransitionGroup className="sessions-list">
-            {courses.map(course => (
+            {courses.map((value, index) => (
               <CSSTransition timeout={500}>
                 <List>
-                  <ListItem button onClick={this.toggleOpen}>
-                    <SessionItemModal course={course} />
-                    {/*<IconButton
-                    aria-label="add"
-                    key={course}
-                    onClick={this.changeBtnValue.bind(this, course)}
+                  <ListItem
+                    key={index}
+                    button
+                    onClick={this.toggleOpen.bind(this, index)}
                   >
-                    <AddIcon />
-                  </IconButton>*/}
-                    <ListItemText primary={course} />
-                    <IconButton
-                      color="dark"
-                      style={{ marginBottom: "2rem" }}
-                      onClick={this.onDownloadClick.bind(this, course)}
-                    >
-                      <ArrowDownwardIcon />
-                    </IconButton>
+                    <SessionItemModal course={value} />
 
-                    {this.state.open ? <ExpandLess /> : <ExpandMore />}
+                    <ListItemText primary={value} />
+
+                    {this.state.open[index] ? <ExpandLess /> : <ExpandMore />}
                   </ListItem>
-                  {/* <Collapse in={this.state.open} timeout="auto" unmountOnExit>
-                    <SessionTab />
-                  </Collapse> */}
+                  <Collapse
+                    in={this.state.open[index]}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <SessionTab
+                      pid={this.state.pid}
+                      courseCode={value}
+                      className="nested"
+                    ></SessionTab>
+                  </Collapse>
                 </List>
               </CSSTransition>
             ))}
@@ -122,6 +132,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   getCourses,
+
   //getSessions,
   downloadSession
 })(SessionsList);
