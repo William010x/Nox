@@ -148,6 +148,30 @@ router.post('/JoinSession', (req, res) => {
     })
 });
 
+//api for getting sessionID here.
+router.get('/sesid', (req, res) => {
+    console.log(`Received get request for sesid `)
+    // Session.findOne({ sesid: req.body.sesid }, function (err, result) {
+    Session.findOne({ courseCode: req.query.courseCode }, function (err, result) {
+        if (err) {
+            console.log("Oh no");
+            res.status(err.status).send({ success: false });
+            return;
+        }
+        else if (result && result.courseCode === req.query.courseCode) {
+            res.status(200);
+            res.json(result);
+            console.log(result);
+        }
+        else { // Did not find Session
+            console.log('DID NOT FIND SESSION');
+            res.status(404).send({ success: false, response: 'DID NOT FIND SESSION' });
+            console.log(result);
+        }
+    })
+})
+
+
 // @route   POST api/sessions
 // @desc    Create a session
 // @access  Private localhost:3000 (front-end)
@@ -183,28 +207,22 @@ router.post('/', async (req, res) => {
     newSession.save().then(sessions => res.json(sessions))
 });
 
-//api for getting sessionID here.
-router.get('/sesid', (req, res) => {
-    console.log(`Received get request for sesid `)
-    // Session.findOne({ sesid: req.body.sesid }, function (err, result) {
-    Session.findOne({ courseCode: req.query.courseCode }, function (err, result) {
-        if (err) {
-            console.log("Oh no");
-            res.status(err.status).send({ success: false });
-            return;
-        }
-        else if (result && result.courseCode === req.query.courseCode) {
-            res.status(200);
-            res.json(result);
-            console.log(result);
-        }
-        else { // Did not find Session
-            console.log('DID NOT FIND SESSION');
-            res.status(404).send({ success: false, response: 'DID NOT FIND SESSION' });
-            console.log(result);
-        }
+
+
+
+
+// To Do: Currently not working
+// @route   DELETE api/sessions/:sesid
+// @desc    Delete a session
+// @access  Public (Should be private in real production)
+router.delete('/', (req, res) => {
+    Session.findOne({ sesid: req.body.sesid }, function (err, result) {
+        if (err) res.status(404).json({ success: false });
+        result => result.remove().then(() => res.json({ success: true }))
+            .catch(err => res.status(404).json({ success: false }));
     })
-})
+});
+
 
 //Below is the query to get the session data
 router.get('/session.txt', (req, res) => {
@@ -223,20 +241,8 @@ router.get('/session.txt', (req, res) => {
         else { // Did not find Session
             console.log('DID NOT FIND SESSION');
             res.status(404).send({ success: false, response: 'DID NOT FIND SESSION' });
-        }    
+        }
     })
 })
-
-// To Do: Currently not working
-// @route   DELETE api/sessions/:sesid
-// @desc    Delete a session
-// @access  Public (Should be private in real production)
-router.delete('/', (req, res) => {
-    Session.findOne({ sesid: req.body.sesid }, function (err, result) {
-        if (err) res.status(404).json({ success: false });
-        result => result.remove().then(() => res.json({ success: true }))
-            .catch(err => res.status(404).json({ success: false }));
-    })
-});
 
 module.exports = router;

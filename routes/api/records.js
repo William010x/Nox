@@ -27,7 +27,7 @@ router.get('/', (req, res) => {
 router.post('/', (req, res) => {
     // TO DO: New comment 
     if (req.body.isComment != undefined && req.body.isComment != null && req.body.isComment == "true" &&
-     req.body.comment.length < msgMaxLen && req.body.comment.length > 0) {
+        req.body.comment.length < msgMaxLen && req.body.comment.length > 0) {
         Record.find({ studentID: req.body.studentID, sessionID: req.body.sessionID }, function (err, result) {
             var delayTime = new Date();
             delayTime = delayTime.setTime(delayTime.getTime() - delay);
@@ -37,14 +37,12 @@ router.post('/', (req, res) => {
                 res.status(err.status).send({ success: false });
                 return;
             }
-            else if (result != undefined && result[result.length-1] != undefined && result[result.length-1].timeStamp > delayTime) {
-                //console.log(result[result.length-1].timeStamp);
-                //console.log(result);
+            else if (result != undefined && result[result.length - 1] != undefined && result[result.length - 1].timeStamp > delayTime) {
+
                 console.log("Message cooldown on " + req.body.comment);
             }
             else {
-                //console.log(result);
-                //console.log("Message pass");
+
 
                 const newRecord = new Record({
                     studentID: req.body.studentID,
@@ -52,10 +50,10 @@ router.post('/', (req, res) => {
                     value: 0,
                     old_value: 0,
                     comment: req.body.comment
-    
+
                 });
                 const myParameters = { "comment": req.body.comment, "sid": req.body.studentID, sesid: req.body.sessionID, "Time": newRecord.timeStamp, "socketID": "" };
-    
+
                 // Websocket Client 
                 // which sends the data to the websocket server --> in server. 
                 socket.emit('newCommentToServer', myParameters);
@@ -63,7 +61,7 @@ router.post('/', (req, res) => {
                 console.log(myParameters);
                 newRecord.save();
                 res.json(myParameters);
-    
+
                 //newRecord.save().then(record => console.log(record) ).catch(error => console.log(error));
             }
         })
@@ -78,7 +76,7 @@ router.post('/', (req, res) => {
         });
         const myParameters = { "sid": req.body.studentID, sesid: req.body.sessionID, "Time": newRecord.timeStamp, "rating": req.body.value, "socketID": "" };
 
-        // Websocket Cleint 
+        // Websocket Client
         // which sends the data to the websocket server --> in server. 
         socket.emit('newCodeToServer', myParameters);
         console.log(5);
