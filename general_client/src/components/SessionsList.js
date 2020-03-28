@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 // import SessionTab  from "./SessionTab";
-import { connect } from "react-redux";z
+import { connect } from "react-redux";
 import { getSessions, downloadSession } from "../actions/sessionActions";
 import { getCourses } from "../actions/courseActions";
 import PropTypes from "prop-types";
@@ -53,7 +53,7 @@ class SessionsList extends Component {
   onDownloadClick(course) {
     this.props.downloadSession(course);
   }
-
+/*
   openSession(course) {
 
     const newSession = {
@@ -65,7 +65,7 @@ class SessionsList extends Component {
     // Add item via addItem action
     this.props.viewSession(newSession);
   };
-
+*/
   // changeBtnValue(course) {
   //   const newSession = {
   //     pid: PID, //Get from cookies once authentication is up and running
@@ -144,7 +144,7 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  viewSession,
+  //viewSession,
   getCourses,
 
   //getSessions,
