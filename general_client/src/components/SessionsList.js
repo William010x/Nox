@@ -1,13 +1,9 @@
 import React, { Component } from "react";
-import { Container, ListGroup, ListGroupItem, Button} from "reactstrap";
+import { Container, ListGroup, ListGroupItem, Button } from "reactstrap";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 // import SessionTab  from "./SessionTab";
-import { connect } from "react-redux";
-import {
-  viewSession,
-  getSessions,
-  downloadSession
-} from "../actions/sessionActions";
+import { connect } from "react-redux";z
+import { getSessions, downloadSession } from "../actions/sessionActions";
 import { getCourses } from "../actions/courseActions";
 import PropTypes from "prop-types";
 import Cookies from "universal-cookie";
@@ -18,12 +14,14 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
 import AddIcon from "@material-ui/icons/AddBox";
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import DownloadIcon from "@material-ui/icons/SaveAlt";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
 import SessionItemModal from "./SessionItemModal";
+import SessionTab from "./SessionTab";
+import "../CSS/NestedSessionsList.css";
 
 const cookies = new Cookies();
 
@@ -32,7 +30,8 @@ class SessionsList extends Component {
     super(props);
 
     this.state = {
-      pid: cookies.get("pid") || "Furki"
+      pid: cookies.get("pid") || "Furki",
+      open: this.setOpenList(this.props.course.length)
     };
 
     // this.changeBtnValue = this.changeBtnValue.bind(this);
@@ -53,7 +52,7 @@ class SessionsList extends Component {
 
   onDownloadClick(course) {
     this.props.downloadSession(course);
-  };
+  }
 
   openSession(course) {
 
@@ -72,50 +71,64 @@ class SessionsList extends Component {
   //     pid: PID, //Get from cookies once authentication is up and running
   //     courseCode: course
   //   };
-    
+
   //   this.props.addSession(newSession);
   // }
 
   //   this.props.addCourse(newCourse);
   // }
-  
+
+  toggleOpen = index => {
+    const temp = this.state.open;
+    temp[index] = !temp[index];
+    this.setState({
+      open: temp
+    });
+  };
+
+  setOpenList = coursesLength => {
+    var openList = new Array(coursesLength);
+    for (var i = 0; i < openList.length; ++i) {
+      openList[i] = false;
+    }
+    return openList;
+  };
+
   render() {
-    const { sessions } = this.props.session;
     const { courses } = this.props.course;
     console.log(this.props.session);
+
     return (
       <Container>
         <ListGroup>
           <TransitionGroup className="sessions-list">
-            {courses.map(course => (
+            {courses.map((value, index) => (
               <CSSTransition timeout={500}>
-                <ListItem button 
-                //onClick={this.onDownloadClick.bind(this, course)}
-                 >
-                  <SessionItemModal course={course}/>
-                   {/*<IconButton
-                    aria-label="add"
-                    key={course}
-                    onClick={this.changeBtnValue.bind(this, course)}
+                <List>
+                  <ListItem
+                    key={index}
+                    button
+                    onClick={this.toggleOpen.bind(this, index)}
                   >
-                    <AddIcon />
-                  </IconButton>*/}
-                  <ListItemText primary={course}
-                  onClick={this.openSession.bind(this, course)}/>
-                  <Button 
-                    className="remove-btn"
-                    color="danger">
-                      &times;
-                  </Button>
-                  <IconButton
-                      color="dark"
-                      style={{ marginBottom: "2rem" }}
-                      onClick = {this.onDownloadClick.bind(this, course)}
-                      >
-                      <ArrowDownwardIcon />
-                  </IconButton>
-                </ListItem>
+                    <SessionItemModal course={value} />
 
+                    <ListItemText primary={value} />
+
+
+                    {this.state.open[index] ? <ExpandLess /> : <ExpandMore />}
+                  </ListItem>
+                  <Collapse
+                    in={this.state.open[index]}
+                    timeout="auto"
+                    unmountOnExit
+                  >
+                    <SessionTab
+                      pid={this.state.pid}
+                      courseCode={value}
+                      className="nested"
+                    ></SessionTab>
+                  </Collapse>
+                </List>
               </CSSTransition>
             ))}
           </TransitionGroup>
@@ -124,7 +137,7 @@ class SessionsList extends Component {
     );
   }
 }
-  
+
 const mapStateToProps = state => ({
   session: state.session,
   course: state.course
@@ -133,6 +146,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   viewSession,
   getCourses,
-  getSessions,
+
+  //getSessions,
   downloadSession
 })(SessionsList);
