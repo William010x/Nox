@@ -57,7 +57,7 @@ class SessionsList extends Component {
   };
 
   onDeleteClick(session) {
-
+    this.props.deleteSession(course);
   };
 
   openSession(course) {
@@ -109,7 +109,8 @@ class SessionsList extends Component {
                   onClick={this.openSession.bind(this, course)}/>
                   <Button 
                     className="remove-btn"
-                    color="danger">
+                    color="danger"
+                    onClick = {this.onDeleteClick.bind(this,)}>
                       &times;
                   </Button>
                   <IconButton
