@@ -18,7 +18,7 @@ let socket;
 
 console.log("THIS IS PROFESSOR CLIENT SOCKET INFO: ", socket);
 
-export class Dashboard extends Component {
+export class SessionView extends Component {
   constructor(props) {
     super(props);
     
@@ -66,9 +66,9 @@ export class Dashboard extends Component {
                 {
                   label: "Number Of Students",
                   data: [
-                    JsonParameters.goodStudents,
-                    JsonParameters.okayStudents,
-                    JsonParameters.confusedStudents
+                    JsonParameters.oldGoodStudents,
+                    JsonParameters.oldOkayStudents,
+                    JsonParameters.oldConfusedStudents
                   ],
                   backgroundColor: [
                     "rgba(0,255,0,0.3)", // good
@@ -206,4 +206,4 @@ export class Dashboard extends Component {
     );
   }
 }
-export default Dashboard;
+export default SessionView;

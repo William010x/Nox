@@ -1,8 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-var cors = require("cors");
-var path = require("path");
 const professor = require("./routes/api/professor");
 const sessions = require("./routes/api/sessions");
 const courses = require("./routes/api/courses");
@@ -10,9 +8,10 @@ const student = require("./routes/api/student");
 const records = require("./routes/api/records");
 const Professor = require("./models/Professor");
 const Records = require("./models/Records");
+const cookieParser = require("cookie-parser");
 var fs = require("fs");
 var cors = require("cors");
-const cookieParser = require("cookie-parser");
+var path = require("path");
 const delay = 10000; // 10000 ms = 60 sec
 
 // In production or development?
@@ -28,9 +27,9 @@ var corsOptions = {
     environment == "development"
       ? "http://localhost:3000"
       : [
-          "https://csc398dev.utm.utoronto.ca",
-          "https://idpz.utorauth.utoronto.ca"
-        ],
+        "https://csc398dev.utm.utoronto.ca",
+        "https://idpz.utorauth.utoronto.ca"
+      ],
   credentials: true
 };
 
@@ -90,12 +89,12 @@ app.use("/nox/api/records", records);
 
 // Authentication required
 // if URL path is under /professor
-app.get("/nox/professor", function(req, res) {
+app.get("/nox/professor", function (req, res) {
   console.log("Authenticating Professor... ");
 
   // Allow access in development enviroment
   // Otherwise check if Professor exists in DB
-  Professor.findOne({ pid: req.headers.utorid }, function(err, result) {
+  Professor.findOne({ pid: req.headers.utorid }, function (err, result) {
     if (err) {
       // Internal Error
       console.log(err);
@@ -195,9 +194,9 @@ io.on("connection", socket => {
       sesidToDataHashmap[studentJson.sesid].socketID != null &&
       sesidToDataHashmap[studentJson.sesid].socketID != undefined &&
       io.sockets.connected[sesidToDataHashmap[studentJson.sesid].socketID] !=
-        undefined &&
+      undefined &&
       io.sockets.connected[sesidToDataHashmap[studentJson.sesid].socketID] !=
-        null
+      null
     ) {
       io.sockets.connected[sesidToDataHashmap[studentJson.sesid].socketID].emit(
         "incomingComment",
@@ -219,9 +218,9 @@ io.on("connection", socket => {
       sesidToDataHashmap[myParameters.sesid].socketID != null &&
       sesidToDataHashmap[myParameters.sesid].socketID != undefined &&
       io.sockets.connected[sesidToDataHashmap[myParameters.sesid].socketID] !=
-        undefined &&
+      undefined &&
       io.sockets.connected[sesidToDataHashmap[myParameters.sesid].socketID] !=
-        null
+      null
     ) {
       io.sockets.connected[
         sesidToDataHashmap[myParameters.sesid].socketID
@@ -243,7 +242,7 @@ function NumberOfStudentsCalculation(JsonParameters) {
   // Initializing an empty student table for new students
   if (
     sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid] ==
-      undefined ||
+    undefined ||
     sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid] == null
   ) {
     sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid] = {
@@ -270,30 +269,21 @@ function NumberOfStudentsCalculation(JsonParameters) {
   }
   // step 2
   if (
-    sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid].rating !=
-      null &&
-    sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid].rating !=
-      undefined
+    sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid].rating != null &&
+    sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid].rating != undefined
   ) {
     // Student is confused
     if (
-      sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid].rating ==
-      1
-    ) {
+      sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid].rating == 1) {
       sesidToDataHashmap[JsonParameters.sesid].confusedStudents -= 1;
     }
     // Student is understanding okay
     if (
-      sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid].rating ==
-      2
-    ) {
+      sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid].rating == 2) {
       sesidToDataHashmap[JsonParameters.sesid].okayStudents -= 1;
     }
     // Student is understanding well
-    if (
-      sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid].rating ==
-      3
-    ) {
+    if (sesidToStudentHashmap[JsonParameters.sesid][JsonParameters.sid].rating == 3) {
       sesidToDataHashmap[JsonParameters.sesid].goodStudents -= 1;
     }
   }
@@ -334,18 +324,22 @@ function NumberOfStudentsCalculation(JsonParameters) {
     sesidToDataHashmap[JsonParameters.sesid].totalStudents;
 
   // Calculate RGB corresponding to avg
+  var avgRating = "";
   var avgRGB = "";
   if (average_rating >= 2.25) {
     // good
+    avgRating = "Good";
     avgRGB = "rgba(0,255,0,0.3)";
   } else if (average_rating <= 1.75) {
     // confused
+    avgRating = "Confused";
     avgRGB = "rgba(255,0,0,0.3)";
   } else {
     //okay
+    avgRating = "Okay";
     avgRGB = "rgba(255,255,0,0.3)";
   }
-  
+
   sesidToDataHashmap[JsonParameters.sesid].oldGoodStudents.push(sesidToDataHashmap[JsonParameters.sesid].goodStudents);
   sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents.push(sesidToDataHashmap[JsonParameters.sesid].okayStudents);
   sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents.push(sesidToDataHashmap[JsonParameters.sesid].confusedStudents);
@@ -369,7 +363,7 @@ function NumberOfStudentsCalculation(JsonParameters) {
     oldOkayStudents: sesidToDataHashmap[JsonParameters.sesid].oldOkayStudents,
     confusedStudents: sesidToDataHashmap[JsonParameters.sesid].confusedStudents,
     oldConfusedStudents: sesidToDataHashmap[JsonParameters.sesid].oldConfusedStudents,
-    average_rating: average_rating,
+    average_rating: avgRating,//average_rating,
     avgRGB: avgRGB
   };
 
@@ -378,9 +372,9 @@ function NumberOfStudentsCalculation(JsonParameters) {
 
 function getOldRecords(delayTime, index, JsonParameters) {
   // Records.find({ sessionID: JsonParameters.sesid, timeStamp: {$lt: delayTime} }, function(err, result) {
-    Records.aggregate([
-      { $match: {sessionID: JsonParameters.sesid, timeStamp: {$lt: delayTime} }},
-      { $group: {_id: "$value", students: { $sum: 1} }}], function (err, result) {
+  Records.aggregate([
+    { $match: { sessionID: JsonParameters.sesid, timeStamp: { $lt: delayTime } } },
+    { $group: { _id: "$value", students: { $sum: 1 } } }], function (err, result) {
       if (err) {
         // Internal Error
         console.log(err);

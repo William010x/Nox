@@ -9,12 +9,28 @@ const Session = require("../../models/Sessions");
 
 const Record = require("../../models/Records");
 
+
 const cookieConfig = {
   //httpOnly: true, // to disable accessing cookie via client side js
   secure: true, // to force https (if you use it)
   maxAge: 1000000000 // ttl in ms (remove this option and cookie will die when browser is closed)
   // signed: true // if you use the secret with cookieParser
 };
+
+
+// If Session not found
+// res.send({ success: false });
+
+// Set a cookie example
+// res.cookie('sesid', result.sesid);
+
+// Remove a cookie
+//  res.clearCookie("sesid");
+
+// Get a Cookie
+// req.cookies['cookieName']
+// res.clearCookie("cookie-name");
+
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
@@ -77,8 +93,6 @@ router.get("/AllSessions", (req, res) => {
   );
 });
 
-// If Session not found
-// res.send({ success: false });
 
 // Set a cookie example
 // res.cookie('sesid', result.sesid);
@@ -161,11 +175,13 @@ router.post("/JoinSession", (req, res) => {
     }
     //res.json(result);
   });
+
 });
 
 // @route   POST api/sessions
 // @desc    Create a session
 // @access  Private localhost:3000 (front-end)
+
 router.post("/", async (req, res) => {
   var id = getRandomIntInclusive(100000, 999999);
   var unique = false;
@@ -185,6 +201,7 @@ router.post("/", async (req, res) => {
       } else {
         unique = true;
       }
+
     });
     n++;
   }
@@ -201,6 +218,7 @@ router.post("/", async (req, res) => {
 });
 
 //api for getting sessionID here.
+
 router.get("/sesid", (req, res) => {
   console.log(`Received get request for sesid `);
   // Session.findOne({ sesid: req.body.sesid }, function (err, result) {
@@ -246,10 +264,12 @@ router.get("/session.txt", (req, res) => {
   });
 });
 
+
 // To Do: Currently not working
 // @route   DELETE api/sessions/:sesid
 // @desc    Delete a session
 // @access  Public (Should be private in real production)
+
 router.delete("/", (req, res) => {
   Session.findOne({ sesid: req.body.sesid }, function(err, result) {
     if (err) res.status(404).json({ success: false });
@@ -259,6 +279,7 @@ router.delete("/", (req, res) => {
         .then(() => res.json({ success: true }))
         .catch(err => res.status(404).json({ success: false }));
   });
+
 });
 
 module.exports = router;

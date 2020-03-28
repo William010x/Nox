@@ -10,10 +10,12 @@ function getRandomIntInclusive(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
 }
 
+// Find all courses for a given professor
+// To find all corresponding sessions call
+// Allsessions API in sessions.js
 router.get('/FindCourse', (req, res) => {
     Course.find({ pid: req.query.pid }).distinct('courseCode', function (err, result) { //see the use of distinct
         if (err) { // Internal Error
-            //callback(err);
             res.status(err.status).send({ success: false });
             return;
         }
@@ -24,6 +26,8 @@ router.get('/FindCourse', (req, res) => {
     });
 });
 
+
+
 // @route   POST api/courses
 // @desc    Create a course
 // @access  Private localhost:3000 (front-end)
@@ -32,7 +36,7 @@ router.post('/', async (req, res) => {
     var unique = false;
     var n = 0;
     var MAX_TRIES = 10;
-    
+
     while (!unique && n < MAX_TRIES) {
         console.log("courseid=", id);
         await Course.findOne({ courseid: id }, function (err, result) {

@@ -3,7 +3,6 @@ import { GET_COURSES, ADD_COURSE, COURSES_LOADING } from './types';
 import Cookies from 'universal-cookie';
 import { PublicURL } from '../config/constants';
 const cookies = new Cookies();
-const courses = [];
 const uuidv4 = require('uuid/v4');
 
 export const getCourses = (pid) => dispatch => {
@@ -18,7 +17,6 @@ export const getCourses = (pid) => dispatch => {
 }
 
 export const addCourse = (Course) => dispatch => {
-    //var sesid = getRandomIntInclusive(100000, 999999);
     //var sesid = genHexCode(6);
 
     //Course.sesid = sesid;
