@@ -89,7 +89,11 @@ class SessionTab extends Component {
               <CSSTransition timeout={500}>
                 <ListItem key={index} button>
                   <ListItemText primary={value.sesid} className="nested" />
-
+                  <Button 
+                    className="remove-btn"
+                    color="danger">
+                      &times;
+                  </Button>
                   <IconButton
                     color="dark"
                     onClick={this.onDownloadClick.bind(
