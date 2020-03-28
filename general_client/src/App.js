@@ -4,6 +4,7 @@ import ProfView from './views/ProfView';
 import StudentView from './views/StudentView';
 import LandingPage from './views/LandingPage';
 import DashBoard from './views/DashBoard';
+import SessionView from './views/SessionView';
 import { Provider } from 'react-redux';
 import store from './store';
 //import {createStore, applyMiddleware} from 'redux';
@@ -25,6 +26,7 @@ class App extends Component {
           <Route path={'/nox/professor'} exact component={ProfView} />
           <Route path={'/nox/student'} exact component={StudentView} />
           <Route path={'/nox/professor/dashboard'} exact component={DashBoard} />
+          <Route path={'/nox/professor/sessionView'} exact component={SessionView} />
 	</Provider>
 	</Router>    
 );

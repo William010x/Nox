@@ -4,8 +4,10 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 // import SessionTab  from "./SessionTab";
 import { connect } from "react-redux";
 import {
+  viewSession,
   getSessions,
-  downloadSession
+  downloadSession,
+  deleteSession
 } from "../actions/sessionActions";
 import { getCourses } from "../actions/courseActions";
 import PropTypes from "prop-types";
@@ -54,6 +56,22 @@ class SessionsList extends Component {
     this.props.downloadSession(course);
   };
 
+  onDeleteClick(session) {
+
+  };
+
+  openSession(course) {
+
+    const newSession = {
+      pid: this.state.pid, //Get from cookies once authentication is up and running
+      sessionName: this.state.sessionName,
+      courseCode: course
+    };
+
+    // Add item via addItem action
+    this.props.viewSession(newSession);
+  };
+
   // changeBtnValue(course) {
   //   const newSession = {
   //     pid: PID, //Get from cookies once authentication is up and running
@@ -76,7 +94,9 @@ class SessionsList extends Component {
           <TransitionGroup className="sessions-list">
             {courses.map(course => (
               <CSSTransition timeout={500}>
-                <ListItem >
+                <ListItem button 
+                //onClick={this.onDownloadClick.bind(this, course)}
+                 >
                   <SessionItemModal course={course}/>
                    {/*<IconButton
                     aria-label="add"
@@ -85,7 +105,13 @@ class SessionsList extends Component {
                   >
                     <AddIcon />
                   </IconButton>*/}
-                  <ListItemText primary={course}/>
+                  <ListItemText primary={course}
+                  onClick={this.openSession.bind(this, course)}/>
+                  <Button 
+                    className="remove-btn"
+                    color="danger">
+                      &times;
+                  </Button>
                   <IconButton
                       color="dark"
                       style={{ marginBottom: "2rem" }}
@@ -110,7 +136,9 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
+  viewSession,
   getCourses,
   getSessions,
-  downloadSession
+  downloadSession,
+  deleteSession
 })(SessionsList);
