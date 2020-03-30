@@ -35,7 +35,7 @@ router.post('/', (req, res) => {
     //  newStudent.save();
 });
 
-// To Do: Currently not working
+// TODO: Currently not working
 // @route   DELETE api/student/:sid
 // @desc    Delete a student
 // @access  Public (Should be private in real production)
