@@ -4,26 +4,18 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { connect } from "react-redux";
 import {
-  viewSession,
-  getSessions,
   downloadSession,
-  deleteSession
 } from "../actions/sessionActions";
 import { getCourses } from "../actions/courseActions";
 import PropTypes from "prop-types";
 import Cookies from "universal-cookie";
 
-import ListSubheader from "@material-ui/core/ListSubheader";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import Collapse from "@material-ui/core/Collapse";
-import AddIcon from "@material-ui/icons/AddBox";
-import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
-import DownloadIcon from "@material-ui/icons/SaveAlt";
 import ExpandLess from "@material-ui/icons/ExpandLess";
 import ExpandMore from "@material-ui/icons/ExpandMore";
-import IconButton from "@material-ui/core/IconButton";
 import SessionItemModal from "./SessionItemModal";
 import SessionTab from "./SessionTab";
 import "../CSS/NestedSessionsList.css";
@@ -74,18 +66,6 @@ class SessionsList extends Component {
     // Add item via addItem action
     this.props.viewSession(newSession);
   };
-
-  // changeBtnValue(course) {
-  //   const newSession = {
-  //     pid: PID, //Get from cookies once authentication is up and running
-  //     courseCode: course
-  //   };
-
-  //   this.props.addSession(newSession);
-  // }
-
-  //   this.props.addCourse(newCourse);
-  // }
 
   toggleOpen = index => {
     const temp = this.state.open;

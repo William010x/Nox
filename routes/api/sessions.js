@@ -18,20 +18,6 @@ const cookieConfig = {
 };
 
 
-// If Session not found
-// res.send({ success: false });
-
-// Set a cookie example
-// res.cookie('sesid', result.sesid);
-
-// Remove a cookie
-//  res.clearCookie("sesid");
-
-// Get a Cookie
-// req.cookies['cookieName']
-// res.clearCookie("cookie-name");
-
-
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
@@ -138,9 +124,6 @@ router.post("/JoinSession", (req, res) => {
         console.log("4");
         let aStudent = new Student({ sid: uuidv4() });
         student = aStudent.sid;
-        //res.cookie('sid', aStudent.sid);
-        //.json({ success: false });;
-        //res.json(newStudent);
       }
     });
   }
@@ -165,7 +148,6 @@ router.post("/JoinSession", (req, res) => {
       res.cookie("sesid", result.sesid);
       res.send({ success: true });
       return;
-      console.log(result);
     } else {
       // Did not find Session
 
@@ -223,16 +205,11 @@ router.get('/session.txt', (req, res) => {
     })
 })
 
-// To Do: Currently not working
+
 // @route   DELETE api/sessions/:sesid
 // @desc    Delete a session
 // @access  Public (Should be private in real production)
 router.delete('/delete', (req, res) => {
-    // Session.findOne({ sesid: req.body.sesid }, function (err, result) {
-    //     if (err) res.status(404).json({ success: false });
-    //     result => result.remove().then(() => res.json({ success: true }))
-    //         .catch(err => res.status(404).json({ success: false }));
-    // })
     console.log(req.query);
     Session.deleteOne(req.query, function(err, result){
         if (err){
@@ -254,7 +231,6 @@ router.delete('/delete', (req, res) => {
 // @route   POST api/sessions
 // @desc    Create a session
 // @access  Private localhost:3000 (front-end)
-
 router.post("/", async (req, res) => {
   var id = getRandomIntInclusive(100000, 999999);
   var unique = false;

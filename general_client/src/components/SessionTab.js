@@ -11,33 +11,12 @@ import {
 import PropTypes from "prop-types";
 import Cookies from "universal-cookie";
 
-import ListSubheader from "@material-ui/core/ListSubheader";
-import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
-import Collapse from "@material-ui/core/Collapse";
-import AddIcon from "@material-ui/icons/AddBox";
-import DownloadIcon from "@material-ui/icons/SaveAlt";
-import ExpandLess from "@material-ui/icons/ExpandLess";
-import ExpandMore from "@material-ui/icons/ExpandMore";
 import IconButton from "@material-ui/core/IconButton";
-import SessionItemModal from "./SessionItemModal";
-import toggle from "./SessionItemModal";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 
 import { makeStyles } from "@material-ui/core/styles";
-//import ListSubheader from "@material-ui/core/ListSubheader";
-//import List from "@material-ui/core/List";
-//import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-//import ListItemText from "@material-ui/core/ListItemText";
-//import Collapse from "@material-ui/core/Collapse";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
-import SendIcon from "@material-ui/icons/Send";
-//import ExpandLess from "@material-ui/icons/ExpandLess";
-//import ExpandMore from "@material-ui/icons/ExpandMore";
-import StarBorder from "@material-ui/icons/StarBorder";
 import "../CSS/NestedSessionsList.css";
 
 const cookies = new Cookies();
@@ -59,7 +38,8 @@ class SessionTab extends Component {
 
     this.state = {
       pid: props.pid,
-      courseCode: props.courseCode
+      courseCode: props.courseCode,
+      showComponent: true
     };
   }
 
@@ -96,7 +76,9 @@ class SessionTab extends Component {
                   <Button 
                     className="remove-btn"
                     color="danger"
-                    onClick={this.onDeleteClick.bind(this, value.sesid)}>
+                    onClick={
+                      this.onDeleteClick.bind(this, value.sesid)
+                    }>
                       &times;
                   </Button>
                   <IconButton
