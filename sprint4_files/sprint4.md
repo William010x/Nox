@@ -14,6 +14,8 @@ Delete button for sessions - Button on each session component would delete the s
 
 View analytics for past sessions - Allows the professor to see previous session data displayed on screen. This will allow to Click Session Redirection to Analytics Page, which is exactly in its name; Fetch Data from the Database, which allows us to receive the previous data from that session; Populate Chatbox with Timestamps, dealing with frontend display of chatbox; Sliding and Zoom(Static), deals with sliding of the line graph depending on time and zooming in to a specific moment of the graph. 
 
+Tasks are assigned on Jira.
+
 The goal of the sprint is to deal with the professors' view, fixing the sessions list and implementing more features for the prof to use. Team capacity increased drastically after realizing that we we could take larger tasks due to other courses comming to an end. Each story has a story point that is ranked in powers of 2 (1, 2, 4, 16, ...). We total up to 44 story points.
 
 There were no spikes this sprint.
