@@ -9,14 +9,12 @@ const Session = require("../../models/Sessions");
 
 const Record = require("../../models/Records");
 
-
 const cookieConfig = {
   //httpOnly: true, // to disable accessing cookie via client side js
   secure: true, // to force https (if you use it)
   maxAge: 1000000000 // ttl in ms (remove this option and cookie will die when browser is closed)
   // signed: true // if you use the secret with cookieParser
 };
-
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
@@ -65,7 +63,8 @@ router.get("/AllSessions", (req, res) => {
       } else if (
         result != undefined &&
         result[0] != undefined &&
-        result[0].pid == req.query.pid
+        result[0].pid == req.query.pid &&
+        result[0].courseCode == req.query.courseCode
       ) {
         // Found Sessions
         console.log(result);
@@ -78,7 +77,6 @@ router.get("/AllSessions", (req, res) => {
     }
   );
 });
-
 
 // Set a cookie example
 // res.cookie('sesid', result.sesid);
@@ -157,75 +155,76 @@ router.post("/JoinSession", (req, res) => {
     }
     //res.json(result);
   });
-
 });
 
 //api for getting sessionID here.
-router.get('/sesid', (req, res) => {
-    console.log(`Received get request for sesid `)
-    // Session.findOne({ sesid: req.body.sesid }, function (err, result) {
-    Session.findOne({ courseCode: req.query.courseCode }, function (err, result) {
-        if (err) {
-            console.log("Oh no");
-            res.status(err.status).send({ success: false });
-            return;
-        }
-        else if (result && result.courseCode === req.query.courseCode) {
-            res.status(200);
-            res.json(result);
-            console.log(result);
-        }
-        else { // Did not find Session
-            console.log('DID NOT FIND SESSION');
-            res.status(404).send({ success: false, response: 'DID NOT FIND SESSION' });
-            console.log(result);
-        }
-    })
-})
+router.get("/sesid", (req, res) => {
+  console.log(`Received get request for sesid `);
+  // Session.findOne({ sesid: req.body.sesid }, function (err, result) {
+  Session.findOne({ courseCode: req.query.courseCode }, function(err, result) {
+    if (err) {
+      console.log("Oh no");
+      res.status(err.status).send({ success: false });
+      return;
+    } else if (result && result.courseCode === req.query.courseCode) {
+      res.status(200);
+      res.json(result);
+      console.log(result);
+    } else {
+      // Did not find Session
+      console.log("DID NOT FIND SESSION");
+      res
+        .status(404)
+        .send({ success: false, response: "DID NOT FIND SESSION" });
+      console.log(result);
+    }
+  });
+});
 
 //Below is the query to get the session data
-router.get('/session.txt', (req, res) => {
-    console.log(`Received get request for session data ` + req.query.sessionID)
-    //finds the session in the Record Schema, using Records, imported above
-    Record.find({ sessionID: req.query.sessionID }, function (err, result) {
-        if (err) {
-            console.log("Oh no");
-            res.status(err.status).send({ success: false });
-            return;
-        }
-        else if (result != []) {
-            res.status(200);
-            res.json(result);
-            console.log("Results: "+ result);
-        }
-        else { // Did not find Session
-            console.log('DID NOT FIND SESSION');
-            res.status(404).send({ success: false, response: 'DID NOT FIND SESSION' });
-        }    
-    })
-})
-
+router.get("/session.txt", (req, res) => {
+  console.log(`Received get request for session data ` + req.query.sessionID);
+  //finds the session in the Record Schema, using Records, imported above
+  Record.find({ sessionID: req.query.sessionID }, function(err, result) {
+    if (err) {
+      console.log("Oh no");
+      res.status(err.status).send({ success: false });
+      return;
+    } else if (result != []) {
+      res.status(200);
+      res.json(result);
+      console.log("Results: " + result);
+    } else {
+      // Did not find Session
+      console.log("DID NOT FIND SESSION");
+      res
+        .status(404)
+        .send({ success: false, response: "DID NOT FIND SESSION" });
+    }
+  });
+});
 
 // @route   DELETE api/sessions/:sesid
 // @desc    Delete a session
 // @access  Public (Should be private in real production)
-router.delete('/delete', (req, res) => {
-    console.log(req.query);
-    Session.deleteOne(req.query, function(err, result){
-        if (err){
-            console.log("delete failed");
-            res.status(err.status).send({success: false});
-            throw err;
-        }
-        else if (result != []) {
-            res.status(200);
-            res.json(result);
-        }
-        else { // Did not find Session
-            console.log('DID NOT FIND SESSION');
-            res.status(404).send({ success: false, response: 'DID NOT FIND SESSION' });
-        }
-    });
+router.delete("/delete", (req, res) => {
+  console.log(req.query);
+  Session.deleteOne(req.query, function(err, result) {
+    if (err) {
+      console.log("delete failed");
+      res.status(err.status).send({ success: false });
+      throw err;
+    } else if (result != []) {
+      res.status(200);
+      res.json(result);
+    } else {
+      // Did not find Session
+      console.log("DID NOT FIND SESSION");
+      res
+        .status(404)
+        .send({ success: false, response: "DID NOT FIND SESSION" });
+    }
+  });
 });
 
 // @route   POST api/sessions
@@ -250,7 +249,6 @@ router.post("/", async (req, res) => {
       } else {
         unique = true;
       }
-
     });
     n++;
   }
@@ -265,6 +263,5 @@ router.post("/", async (req, res) => {
 
   newSession.save().then(sessions => res.json(sessions));
 });
-
 
 module.exports = router;
